@@ -1,0 +1,40 @@
+import { PatientService } from "~/types";
+
+export const patientService: PatientService[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "do",
+    details: "XXX",
+    date: new Date().getTime(),
+    status: "completed",
+    patientID: "VUVX709ET7BY",
+    sourceName: "Bank Account",
+    sourceDesc: "*** 1111",
+    amount: 400,
+  },
+  {
+    id: "2",
+    firstName: "John",
+    lastName: "do",
+    details: "XXX",
+    date: new Date().getTime(),
+    status: "completed",
+    patientID: "VUVX709ET7BY",
+    sourceName: "Bank Account",
+    sourceDesc: "*** 1111",
+    amount: 400,
+  },
+  {
+    id: "3",
+    firstName: "John",
+    lastName: "do",
+    details: "XXX",
+    date: new Date().getTime(),
+    status: "completed",
+    patientID: "VUVX709ET7BY",
+    sourceName: "Bank Account",
+    sourceDesc: "*** 1111",
+    amount: 400,
+  },
+];
