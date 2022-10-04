@@ -16,6 +16,8 @@ import {
   Typography,
   TextField,
   IconButton,
+  Button,
+  Tooltip,
 } from "@mui/material";
 
 import {
@@ -27,6 +29,14 @@ import {
 } from "@mui/icons-material";
 
 import { styled } from "@mui/material/styles";
+
+import { ReactComponent as FilterIcon } from "~/assets/icons/filter.svg";
+import { ReactComponent as ActivateIcon } from "~/assets/icons/activate.svg";
+import { ReactComponent as LinesIcon } from "~/assets/icons/lines.svg";
+import { ReactComponent as PinIcon } from "~/assets/icons/pin.svg";
+import { ReactComponent as CopyIcon } from "~/assets/icons/copy.svg";
+import { ReactComponent as PrinterIcon } from "~/assets/icons/printer.svg";
+import { ReactComponent as AddIcon } from "~/assets/icons/add.svg";
 
 const IconCustomButton = ({
   onClick,
@@ -95,7 +105,7 @@ const BulkActions: FC<IBulkActions> = ({
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <CustomTextField
+          {/* <CustomTextField
             placeholder="Search"
             onChange={onHandleSearch}
             InputProps={{
@@ -105,21 +115,51 @@ const BulkActions: FC<IBulkActions> = ({
                 </IconCustomButton>
               ),
             }}
-          />
+          /> */}
           {/* <IconCustomButton onClick={openMenu}>
-            <Search />
+            <ActivateIcon />
           </IconCustomButton> */}
+          <Button
+            disableRipple
+            ////onClick={closeSidebar}
+            startIcon={<LinesIcon />}
+            sx={{
+              background: "#001215",
+              color: "#FFF",
+              display: "flex",
+              gap: "7px",
+            }}
+          >
+            All
+          </Button>
+          <Button
+            disableRipple
+            ////onClick={closeSidebar}
+            startIcon={<ActivateIcon />}
+            sx={{
+              background: "#005914",
+              color: "#FFF",
+              display: "flex",
+              gap: "7px",
+              marginLeft: "14px",
+            }}
+          >
+            Activate
+          </Button>
           <IconCustomButton onClick={openMenu}>
-            <FilterAltSharp />
+            <PinIcon />
           </IconCustomButton>
           <IconCustomButton onClick={openMenu}>
-            <ContentCopy />
+            <CopyIcon />
           </IconCustomButton>
           <IconCustomButton onClick={AddItemAction}>
-            <AddCircleTwoTone />
+            <PrinterIcon />
           </IconCustomButton>
           <IconCustomButton onClick={openMenu}>
-            <Print />
+            <FilterIcon />
+          </IconCustomButton>
+          <IconCustomButton onClick={openMenu}>
+            <AddIcon />
           </IconCustomButton>
         </Box>
       </Box>

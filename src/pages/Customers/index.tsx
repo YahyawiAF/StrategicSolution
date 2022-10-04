@@ -13,23 +13,24 @@ import { getAllCompany, Delete } from "~/repositories/company.service";
 
 import { ICompany } from "~/types";
 import Page from "@components/Page";
+import { getAllPatient } from "~/repositories/Patients.servise";
 
 interface IPagination {
   page: number;
   limit: number;
 }
 
-const TABLE_CUSTOMERS_STRUCTURE: Array<string> = [
-  "name",
-  "phone",
-  "email",
-  "city",
-  "state",
+const TABLE_PATIENTS_STRUCTURE: Array<string> = [
+  "firstname",
+  "lastname",
+  "suffix",
+  "dateofbirth",
+  // "state",
 ];
 
 const CUSTOMER_SHARED_DATA: Record<string, any> = {
   addRoute: "/dashboard/add-customer",
-  title: "Customers List",
+  title: "Patients List",
 };
 
 function CustomersPage() {
@@ -39,11 +40,11 @@ function CustomersPage() {
     limit: 50,
   });
   const [totalRows, setTotalRows] = useState(0);
-  const CompanyService = useRef(getAllCompany);
+  const PatientsService = useRef(getAllPatient);
   const DeleteService = useRef(Delete);
   const getCompany = useCallback(
     async (pagination: IPagination) => {
-      await CompanyService.current(pagination).then(
+      await PatientsService.current(pagination).then(
         (response: any) => {
           setCustomers(response.data.data);
           setTotalRows(response.data.total);
@@ -53,7 +54,7 @@ function CustomersPage() {
         }
       );
     },
-    [pagination, CompanyService]
+    [pagination, PatientsService]
   );
 
   useEffect(() => {
@@ -93,7 +94,7 @@ function CustomersPage() {
     <>
       <Page>
         <MainTable
-          tableRowColumns={TABLE_CUSTOMERS_STRUCTURE}
+          tableRowColumns={TABLE_PATIENTS_STRUCTURE}
           handleLimitChange={handleLimitChange}
           handlePageChange={handlePageChange}
           pagination={pagination}

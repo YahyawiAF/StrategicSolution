@@ -96,7 +96,7 @@ const BulkActions: FC<IBulkActions> = ({
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center">
           <Typography variant="h5" color="text.secondary">
-            Customer List
+            Patients List
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">

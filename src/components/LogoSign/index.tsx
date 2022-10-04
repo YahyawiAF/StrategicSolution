@@ -11,7 +11,6 @@ const LogoWrapper = styled(Link)(
         height: ${theme.header.height};
         font-weight: ${theme.typography.fontWeightBold};
         position: relative;
-        margin-bottom: 46px;
 `
 );
 

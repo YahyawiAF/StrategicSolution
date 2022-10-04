@@ -28,6 +28,8 @@ import FindInPageTwoToneIcon from "@mui/icons-material/FindInPageTwoTone";
 
 import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
 
+import { ReactComponent as Search } from "~/assets/icons/japaneese.svg";
+
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
   ref: Ref<unknown>
@@ -94,7 +96,7 @@ function HeaderSearch() {
     <>
       <Tooltip arrow title="Search">
         <IconButton color="primary" onClick={handleClickOpen}>
-          <SearchTwoToneIcon />
+          <Search />
         </IconButton>
       </Tooltip>
 

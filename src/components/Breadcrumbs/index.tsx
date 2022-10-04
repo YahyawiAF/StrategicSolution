@@ -5,7 +5,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 
 const breadcrumbNameMap: { [key: string]: string } = {
-  "/dashboard": "Customers",
+  "/dashboard": "Patients",
   "/dashboard/add-customer": "Add Customer",
   "/products": "Products",
 };

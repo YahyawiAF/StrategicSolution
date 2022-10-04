@@ -37,6 +37,10 @@ import BulkActions from "./BulkActions";
 import { useNavigate } from "react-router-dom";
 import Modal from "@components/Modal/BasicModal";
 
+import { ReactComponent as DeleteIcon } from "~/assets/icons/delete.svg";
+import { ReactComponent as EditIcon } from "~/assets/icons/edit.svg";
+import { ReactComponent as EyeIcon } from "~/assets/icons/eye.svg";
+
 interface IPagination {
   page: number;
   limit: number;
@@ -328,7 +332,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                     {getStatusLabel("completed")}
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Order" arrow>
+                    <Tooltip title="View Patient" arrow>
                       <IconButton
                         onClick={() => EditItem(item.id, item.name)}
                         sx={{
@@ -340,7 +344,22 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                         color="inherit"
                         size="small"
                       >
-                        <EditTwoToneIcon fontSize="small" />
+                        <EyeIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit Patient" arrow>
+                      <IconButton
+                        onClick={() => EditItem(item.id, item.name)}
+                        sx={{
+                          "&:hover": {
+                            background: theme.colors.primary.lighter,
+                          },
+                          color: theme.palette.primary.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <EditIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip
@@ -356,7 +375,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                         color="inherit"
                         size="small"
                       >
-                        <DeleteTwoToneIcon fontSize="small" />
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

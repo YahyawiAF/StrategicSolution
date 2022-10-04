@@ -15,33 +15,33 @@ import { styled } from "@mui/material/styles";
 
 import { formatDistance, subDays } from "date-fns";
 
-import { ReactComponent as Notifications } from "~/assets/icons/notification.svg";
+import { ReactComponent as MessageIcon } from "~/assets/icons/messages.svg";
 
-const NotificationsBadge = styled(Badge)(
+const MessagesBadge = styled(Badge)(
   ({ theme }) => `
-    
-    .MuiBadge-badge {
-        background-color: ${alpha(theme.palette.error.main, 0.1)};
-        color: ${theme.palette.error.main};
-        min-width: 16px; 
-        height: 16px;
-        padding: 0;
-
-        &::after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            box-shadow: 0 0 0 1px ${alpha(theme.palette.error.main, 0.3)};
-            content: "";
-        }
-    }
-`
+      
+      .MuiBadge-badge {
+          background-color: ${alpha(theme.palette.error.main, 0.1)};
+          color: ${theme.palette.error.main};
+          min-width: 16px; 
+          height: 16px;
+          padding: 0;
+  
+          &::after {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              box-shadow: 0 0 0 1px ${alpha(theme.palette.error.main, 0.3)};
+              content: "";
+          }
+      }
+  `
 );
 
-function HeaderNotifications() {
+function HeaderMessages() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -57,15 +57,15 @@ function HeaderNotifications() {
     <>
       <Tooltip arrow title="Notifications">
         <IconButton color="primary" ref={ref} onClick={handleOpen}>
-          <NotificationsBadge
+          <MessagesBadge
             badgeContent={1}
             anchorOrigin={{
               vertical: "top",
               horizontal: "right",
             }}
           >
-            <Notifications />
-          </NotificationsBadge>
+            <MessageIcon />
+          </MessagesBadge>
         </IconButton>
       </Tooltip>
       <Popover
@@ -121,4 +121,4 @@ function HeaderNotifications() {
   );
 }
 
-export default HeaderNotifications;
+export default HeaderMessages;

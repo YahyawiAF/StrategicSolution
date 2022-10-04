@@ -36,13 +36,13 @@ const SaveButton = styled(LoadingButton)(
 );
 
 const FormInputList = [
-  { name: "name", type: "" },
-  { name: "phone", type: "" },
-  { name: "email", type: "" },
+  { name: "Customer Name", type: "" },
+  { name: "Location", type: "" },
+  { name: "Orders", type: "" },
   // { name: "address1", type: "" },
   // { name: "address2", type: "" },
-  { name: "city", type: "" },
-  { name: "state", type: "" },
+  { name: "Registered", type: "" },
+  { name: "Status", type: "" },
   // { name: "country", type: "" },
   // { name: "comments", type: "" },
   // { name: "tags", type: "" },
