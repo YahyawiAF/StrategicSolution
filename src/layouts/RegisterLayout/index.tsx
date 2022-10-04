@@ -10,6 +10,14 @@ import { useAuth } from "~/contexts/authContext";
 import { Navigate } from "react-router-dom";
 
 const RootStyle = styled("div")(({ theme }) => ({
+  background: "url(static/image/background-login.png)",
+  backgroundRepeat: "no-repeat",
+  backgroundAttachment: "fixed",
+  backgroundPositionX: "94%",
+  backgroundPositionY: "center",
+  backgroundSize: "1206px",
+  backgroundColor: "rgba(249, 249, 249, 0.9)",
+  backgroundBlendMode: "lighten",
   [theme.breakpoints.up("md")]: {
     display: "flex",
   },
@@ -37,7 +45,7 @@ export default function Login() {
     <Page title="Login">
       <RootStyle>
         <Outlet />
-        {mdUp && (
+        {/* {mdUp && (
           <SectionStyle>
             <Box
               component="img"
@@ -45,7 +53,7 @@ export default function Login() {
               //sx={{ width: 140, height: 40 }}
             />
           </SectionStyle>
-        )}
+        )} */}
       </RootStyle>
     </Page>
   );

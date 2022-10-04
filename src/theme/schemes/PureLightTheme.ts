@@ -20,7 +20,7 @@ const responsiveFontSizes = ({ sm, md, lg }: ResponsiveFontSizes) => {
 };
 
 const themeColors = {
-  primary: "#01A3D4",
+  primary: "#282F6C",
   secondary: "#6E759F",
   success: "#57CA22",
   warning: "#FFA319",

@@ -71,20 +71,21 @@ export default function RegisterForm() {
           name="password"
           label="Password"
           type={showPassword ? "text" : "password"}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                edge="end"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <Iconify
-                  icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                />
-              </IconButton>
-            </InputAdornment>
-          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  <Iconify
+                    icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
+                  />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-
         <LoadingButton
           fullWidth
           size="large"

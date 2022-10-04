@@ -107,25 +107,26 @@ export default function LoginForm() {
             type={"text"}
             name="userName"
             label="Email Address / Username *"
-            placeholder="Email Address / Username *"
+            // placeholder="Email Address / Username *"
           />
           <RHFTextField
             name="password"
-            placeholder="Password*"
-            label="Password*"
+            label="Password"
             type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  <Iconify
-                    icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                  />
-                </IconButton>
-              </InputAdornment>
-            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    <Iconify
+                      icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </Stack>
 
@@ -143,27 +144,14 @@ export default function LoginForm() {
 
         <LoadingButton
           fullWidth
-          sx={{ borderRadius: 208, color: "#FFF" }}
+          sx={{ borderRadius: 1, color: "#FFF" }}
           size="large"
           type="submit"
           variant="contained"
           loading={isSubmitting}
         >
-          Login
+          Sign in
         </LoadingButton>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ my: 2 }}
-        >
-          <Typography sx={{ color: "text.secondary" }}>
-            Don{"'"}t have an account?
-          </Typography>{" "}
-          <Link variant="subtitle2" underline="hover">
-            Sign up
-          </Link>
-        </Stack>
       </FormProvider>
     </>
   );

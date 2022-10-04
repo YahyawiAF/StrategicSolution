@@ -5,18 +5,16 @@ import ThemeProvider from "~/theme/ThemeProvider";
 import { AuthProvider } from "~/contexts/authContext";
 import { SidebarProvider } from "~/contexts/SidebarContext";
 
-const App: React.FC = () => {
-  return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <SidebarProvider>
-          <AuthProvider>
-            <RenderRouter />
-          </AuthProvider>
-        </SidebarProvider>
-      </BrowserRouter>
-    </ThemeProvider>
-  );
-};
+const App: React.FC = () => (
+  <ThemeProvider>
+    <BrowserRouter>
+      <SidebarProvider>
+        <AuthProvider>
+          <RenderRouter />
+        </AuthProvider>
+      </SidebarProvider>
+    </BrowserRouter>
+  </ThemeProvider>
+);
 
 export default App;

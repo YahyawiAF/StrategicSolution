@@ -91,7 +91,7 @@ const SubMenuWrapper = styled(Box)(
 
           &.active,
           &:hover {
-            border-left: 5px solid #01A3D4;
+            border-left: 5px solid #282F6C;
             background: linear-gradient(90deg, rgba(1, 163, 212, 0.09) 0%, rgba(1, 163, 212, 0) 100%);
             color: ${theme.colors.alpha.trueWhite[100]};
 
