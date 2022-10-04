@@ -1,5 +1,7 @@
 import { Box, styled } from "@mui/material";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { SidebarContext } from "~/contexts/SidebarContext";
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -9,6 +11,7 @@ const LogoWrapper = styled(Link)(
         height: ${theme.header.height};
         font-weight: ${theme.typography.fontWeightBold};
         position: relative;
+        margin-bottom: 46px;
 `
 );
 
@@ -21,11 +24,16 @@ const LogoSignWrapper = styled(Box)(
 );
 
 function Logo() {
+  const { closeSidebar, sidebarToggle } = useContext(SidebarContext);
   return (
     <LogoWrapper to="/dashboard">
       <Box
         component="img"
-        src="/static/image/medical.png"
+        src={
+          sidebarToggle
+            ? "/static/image/StrategicSolutionsFullLogo.png"
+            : "/static/image/StrategicSolutionsLogo.png"
+        }
         sx={{
           position: "absolute",
           height: "64px",

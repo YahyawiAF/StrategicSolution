@@ -47,7 +47,7 @@ function Sidebar() {
           position: "fixed",
           left: 0,
           top: 0,
-          background: "#1A1C1E",
+          background: "#282F6C",
         }}
       >
         <Scrollbar>

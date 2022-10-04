@@ -14,7 +14,7 @@ type PropsType = {
 const ContainerPage = styled(Container)(
   ({ theme }) => `
     && {
-      padding:${theme.typography.pxToRem(5)};
+      padding:${theme.typography.pxToRem(15)};
     }
 `
 );

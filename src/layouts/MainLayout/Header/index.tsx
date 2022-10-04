@@ -48,7 +48,7 @@ function Header() {
         },
       }}
     >
-      <Stack
+      {/* <Stack
         direction="row"
         //divider={<Divider orientation="vertical" flexItem />}
         alignItems="center"
@@ -62,8 +62,9 @@ function Header() {
             cursor: "pointer",
           }}
         />
-        <Breadcrumb />
-      </Stack>
+        
+      </Stack> */}
+      <Breadcrumb />
       <Box display="flex" alignItems="center">
         <HeaderButtons />
         <HeaderUserbox />

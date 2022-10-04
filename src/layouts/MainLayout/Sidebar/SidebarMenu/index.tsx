@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import {
+  Stack,
   Tooltip,
   Box,
   List,
@@ -12,11 +13,15 @@ import {
 import { NavLink as RouterLink } from "react-router-dom";
 import { SidebarContext } from "~/contexts/SidebarContext";
 
-import PersonTwoToneIcon from "@mui/icons-material/PersonTwoTone";
-import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
-import AutoStoriesTwoToneIcon from "@mui/icons-material/AutoStoriesTwoTone";
-import AttachMoneyTwoToneIcon from "@mui/icons-material/AttachMoneyTwoTone";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { ReactComponent as ProfileIcon } from "~/assets/icons/profile.svg";
+import { ReactComponent as HeartIcon } from "~/assets/icons/heart.svg";
+import { ReactComponent as ReportsIcon } from "~/assets/icons/reports.svg";
+import { ReactComponent as BillingIcon } from "~/assets/icons/billing.svg";
+
+import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
+import Breadcrumb from "@components/Breadcrumbs";
+import { NavigateBeforeOutlined } from "@mui/icons-material";
+
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -62,10 +67,10 @@ const SubMenuWrapper = styled(Box)(
           color: #01061C;
           background-color: transparent;
           width: 100%;
-          justify-content: center;
+          justify-content: start;
           padding: ${theme.spacing(0)};
           border-radius: ${theme.spacing(0)};
-          padding: 14px 0;
+          padding: 14px 14px;
           .MuiButton-startIcon,
           .MuiButton-endIcon {
             transition: ${theme.transitions.create(["color"])};
@@ -77,9 +82,20 @@ const SubMenuWrapper = styled(Box)(
           }
 
           .MuiButton-startIcon {
-            color: #01061C;
+            color: rgba(255, 255, 255, 0.75);
             font-size: ${theme.typography.pxToRem(20)};
             margin: ${theme.spacing(0)};
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 12px;
+            p {
+              font-weight: 400;
+              font-size: 18px;
+              line-height: 20px;
+              text-align: center;
+              margin: 0;
+            }
           }
           
           .MuiButton-endIcon {
@@ -91,9 +107,24 @@ const SubMenuWrapper = styled(Box)(
 
           &.active,
           &:hover {
-            border-left: 5px solid #282F6C;
-            background: linear-gradient(90deg, rgba(1, 163, 212, 0.09) 0%, rgba(1, 163, 212, 0) 100%);
+            // border-left: 5px solid #282F6C;
             color: ${theme.colors.alpha.trueWhite[100]};
+
+            span {
+              width: 100%;
+              background: #fff;
+              padding: 5px 10px;
+              border-radius: 5px;
+              display: flex;
+              align-items: center;
+              justify-content: start;
+              gap: 12px;
+              margin-left: 8px;
+              p {
+                color: #01061C;
+                margin: 0;
+              }
+            }
 
             .MuiButton-startIcon,
             .MuiButton-endIcon {
@@ -102,6 +133,11 @@ const SubMenuWrapper = styled(Box)(
                 color: ${theme.colors.alpha.trueWhite[100]};
                 font-size: 26px;
                 transition: none;
+              }
+              svg {
+                path {
+                  fill: #000;
+                }
               }
             }
           }
@@ -124,7 +160,7 @@ const SubMenuWrapper = styled(Box)(
           }
 
           .MuiListItem-root {
-            padding: 1px 0;
+            // padding: 1px 0;
 
             .MuiButton-root {
               padding: ${theme.spacing(0.8, 3)};
@@ -166,7 +202,7 @@ const SubMenuWrapper = styled(Box)(
 );
 
 function SidebarMenu() {
-  const { closeSidebar } = useContext(SidebarContext);
+  const { toggleSidebar, sidebarToggle } = useContext(SidebarContext);
 
   return (
     <>
@@ -179,6 +215,38 @@ function SidebarMenu() {
           //   </ListSubheader>
           // }
         >
+          <Stack
+            direction="row"
+            //divider={<Divider orientation="vertical" flexItem />}
+            alignItems="center"
+            justifyContent="end"
+            padding="12px"
+            spacing={2}
+          >
+            {sidebarToggle ? (
+              <NavigateBeforeOutlined
+                onClick={toggleSidebar}
+                sx={{
+                  boxShadow: "0px 0px 24px rgba(0, 0, 0, 0.08)",
+                  borderRadius: "7px",
+                  cursor: "pointer",
+                  background: "#fff",
+                  fill: "#000",
+                }}
+              />
+            ) : (
+              <NavigateNextOutlinedIcon
+                onClick={toggleSidebar}
+                sx={{
+                  boxShadow: "0px 0px 24px rgba(0, 0, 0, 0.08)",
+                  borderRadius: "7px",
+                  cursor: "pointer",
+                  background: "#fff",
+                  fill: "#000",
+                }}
+              />
+            )}
+          </Stack>
           <SubMenuWrapper>
             <List component="div">
               <Divider
@@ -194,8 +262,13 @@ function SidebarMenu() {
                     component={RouterLink}
                     ////onClick={closeSidebar}
                     to="/dashboard"
-                    startIcon={<PersonTwoToneIcon />}
-                  ></Button>
+                    startIcon={
+                      <>
+                        <ProfileIcon />
+                        {sidebarToggle ? <p>Patients</p> : null}
+                      </>
+                    }
+                  />
                 </Tooltip>
               </ListItem>
               <Divider
@@ -211,7 +284,12 @@ function SidebarMenu() {
                     component={RouterLink}
                     //onClick={closeSidebar}
                     to="/products"
-                    startIcon={<ShoppingCartRoundedIcon />}
+                    startIcon={
+                      <>
+                        <HeartIcon />
+                        {sidebarToggle ? <p>Insurance</p> : null}
+                      </>
+                    }
                   />
                 </Tooltip>
               </ListItem>
@@ -228,7 +306,12 @@ function SidebarMenu() {
                     component={RouterLink}
                     //onClick={closeSidebar}
                     to="/orders"
-                    startIcon={<AutoStoriesTwoToneIcon />}
+                    startIcon={
+                      <>
+                        <ReportsIcon />
+                        {sidebarToggle ? <p>Reports</p> : null}
+                      </>
+                    }
                   />
                 </Tooltip>
               </ListItem>
@@ -245,7 +328,12 @@ function SidebarMenu() {
                     component={RouterLink}
                     //onClick={closeSidebar}
                     to="/pricings"
-                    startIcon={<AttachMoneyTwoToneIcon />}
+                    startIcon={
+                      <>
+                        <BillingIcon />
+                        {sidebarToggle ? <p>Billing</p> : null}
+                      </>
+                    }
                   />
                 </Tooltip>
               </ListItem>

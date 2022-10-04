@@ -399,6 +399,7 @@ export const PureLightTheme = createTheme({
           display: "flex",
           flex: 1,
           flexDirection: "column",
+          background: "#E3E3ED",
         },
         html: {
           display: "flex",
