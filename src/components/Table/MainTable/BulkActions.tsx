@@ -58,39 +58,19 @@ interface IBulkActions {
   title: string;
 }
 
-const CustomTextField = styled(TextField)(
-  () => `
-    && {
-      box-shadow: unset;
-      border-radius:0;
-      .MuiInputBase-root {
-        border-radius: 0;
-        input {
-          padding: 7.5px 10px;
-        }
-      }
-    }
-`
-);
-
 const BulkActions: FC<IBulkActions> = ({
   onHandleSearch,
   AddItemAction,
   title,
 }) => {
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
-  // const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const moreRef = useRef<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
 
   const openMenu = useCallback((): void => {
-    console.log("openMenu");
+    menuOpen(true);
   }, []);
-
-  // const openDeleteModal = useCallback((): void => {
-  //   setModalOpen(true);
-  // }, []);
 
   const closeMenu = (): void => {
     menuOpen(false);
@@ -105,23 +85,8 @@ const BulkActions: FC<IBulkActions> = ({
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          {/* <CustomTextField
-            placeholder="Search"
-            onChange={onHandleSearch}
-            InputProps={{
-              endAdornment: (
-                <IconCustomButton>
-                  <Search />
-                </IconCustomButton>
-              ),
-            }}
-          /> */}
-          {/* <IconCustomButton onClick={openMenu}>
-            <ActivateIcon />
-          </IconCustomButton> */}
           <Button
             disableRipple
-            ////onClick={closeSidebar}
             startIcon={<LinesIcon />}
             sx={{
               background: "#001215",
@@ -134,7 +99,6 @@ const BulkActions: FC<IBulkActions> = ({
           </Button>
           <Button
             disableRipple
-            ////onClick={closeSidebar}
             startIcon={<ActivateIcon />}
             sx={{
               background: "#005914",
@@ -158,7 +122,7 @@ const BulkActions: FC<IBulkActions> = ({
           <IconCustomButton onClick={openMenu}>
             <FilterIcon />
           </IconCustomButton>
-          <IconCustomButton onClick={openMenu}>
+          <IconCustomButton onClick={AddItemAction}>
             <AddIcon />
           </IconCustomButton>
         </Box>

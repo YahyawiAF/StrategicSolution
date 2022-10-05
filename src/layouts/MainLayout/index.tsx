@@ -18,7 +18,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
   return (
     <>
@@ -50,9 +50,9 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           sx={{
             height: "100%",
             position: "relative",
-            zIndex: 5,
             display: "block",
             flex: 1,
+            overflow: "hidden",
             pt: `${theme.header.height}`,
             [theme.breakpoints.up("lg")]: {
               ml: `${sidebarToggle ? "250px" : theme.sidebar.width}`,

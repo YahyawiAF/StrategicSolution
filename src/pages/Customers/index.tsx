@@ -13,7 +13,37 @@ import { getAllCompany, Delete } from "~/repositories/company.service";
 
 import { ICompany } from "~/types";
 import Page from "@components/Page";
-import { getAllPatient } from "~/repositories/Patients.servise";
+import { getAllPatient } from "~/repositories/patients.servise";
+import ADDForm from "./AddCustomers/AddForm";
+import { useParams } from "react-router-dom";
+import { Get } from "~/repositories/patients.servise";
+
+import {
+  Box,
+  Drawer,
+  styled,
+  Divider,
+  useTheme,
+  darken,
+  BoxTypeMap,
+} from "@mui/material";
+
+interface IDefaultValues {
+  name: string;
+  phone: string;
+  email: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  country: string;
+  comments: string;
+  tags: string;
+}
+
+interface EditMenuProps {
+  visible: boolean;
+}
 
 interface IPagination {
   page: number;
@@ -34,14 +64,18 @@ const CUSTOMER_SHARED_DATA: Record<string, any> = {
 };
 
 function CustomersPage() {
+  const [company, setCompany] = useState<IDefaultValues | null>(null);
+  const { id } = useParams();
   const [customers, setCustomers] = useState<ICompany[]>([]);
   const [pagination, setPagination] = useState<IPagination>({
     page: 0,
     limit: 50,
   });
   const [totalRows, setTotalRows] = useState(0);
+  const [isEditMenuVisible, setIsEditMenuVisible] = useState<boolean>(false);
   const PatientsService = useRef(getAllPatient);
   const DeleteService = useRef(Delete);
+
   const getCompany = useCallback(
     async (pagination: IPagination) => {
       await PatientsService.current(pagination).then(
@@ -90,6 +124,16 @@ function CustomersPage() {
     []
   );
 
+  const handelEdit = useCallback(
+    (record: any) => {
+      setIsEditMenuVisible(!isEditMenuVisible);
+      setCompany(record);
+    },
+    [isEditMenuVisible]
+  );
+
+  console.log("company", company);
+
   return (
     <>
       <Page>
@@ -103,10 +147,36 @@ function CustomersPage() {
           basicRoute={"dashboard"}
           sharedData={CUSTOMER_SHARED_DATA}
           totalRows={totalRows}
+          onOpenMenu={handelEdit}
         />
+        <EditSideMenu visible={isEditMenuVisible}>
+          <p onClick={() => setIsEditMenuVisible(false)}>Add New Customer</p>
+          <ADDForm company={company} id={id} />
+        </EditSideMenu>
       </Page>
     </>
   );
 }
+
+const EditSideMenu = styled("div", {
+  shouldForwardProp: prop => prop !== "visible",
+})<EditMenuProps>(
+  ({ theme, visible }) => `
+  width: ${visible ? "40%" : "0"};
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  right: ${visible ? "0" : "-46px"};
+  background: #FFF;
+  z-index: 11;
+  transition: width 0.5s;
+  form {
+    div {
+      display:  ${visible ? "block" : "none"};
+    }
+  }
+
+`
+);
 
 export default CustomersPage;

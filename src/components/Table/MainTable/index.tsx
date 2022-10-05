@@ -57,6 +57,7 @@ interface RecentOrdersTableProps {
   basicRoute: string;
   sharedData: Record<string, any>;
   totalRows: number;
+  onOpenMenu: (record: any) => void;
 }
 
 interface Filters {
@@ -169,6 +170,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
   basicRoute,
   sharedData,
   totalRows,
+  onOpenMenu,
 }) => {
   const classes = useStyles();
   const [selectedItems, setItems] = useState<number[]>([]);
@@ -296,7 +298,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                 <TableRow hover key={index} selected={isItemSelected}>
                   <TableCell
                     padding="checkbox"
-                    onClick={() => EditItem(item.id, item.name)}
+                    onClick={() => EditItem(item.id, item.firstname)}
                   >
                     <Checkbox
                       color="primary"
@@ -315,7 +317,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                       return (
                         <TableCell
                           key={index}
-                          onClick={() => EditItem(item["id"], item["name"])}
+                          onClick={() =>
+                            EditItem(item["id"], item["firstname"])
+                          }
                         >
                           <Typography
                             variant="body1"
@@ -334,7 +338,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                   <TableCell align="right">
                     <Tooltip title="View Patient" arrow>
                       <IconButton
-                        onClick={() => EditItem(item.id, item.name)}
+                        onClick={() => EditItem(item.id, item.firstname)}
                         sx={{
                           "&:hover": {
                             background: theme.colors.primary.lighter,
@@ -349,7 +353,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
                     </Tooltip>
                     <Tooltip title="Edit Patient" arrow>
                       <IconButton
-                        onClick={() => EditItem(item.id, item.name)}
+                        onClick={() => onOpenMenu(item)}
                         sx={{
                           "&:hover": {
                             background: theme.colors.primary.lighter,

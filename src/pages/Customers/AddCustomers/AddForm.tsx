@@ -164,6 +164,7 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id }) => {
 
   return (
     <>
+      {/* <h1>Add Patients Details in here</h1> */}
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}

@@ -11,28 +11,16 @@ const LogoWrapper = styled(Link)(
         height: ${theme.header.height};
         font-weight: ${theme.typography.fontWeightBold};
         position: relative;
-`
-);
-
-const LogoSignWrapper = styled(Box)(
-  () => `
-        width: 52px;
-        height: 38px;
-        position: relative;
+        margin-bottom: 30px;
 `
 );
 
 function Logo() {
-  const { closeSidebar, sidebarToggle } = useContext(SidebarContext);
   return (
     <LogoWrapper to="/dashboard">
       <Box
         component="img"
-        src={
-          sidebarToggle
-            ? "/static/image/StrategicSolutionsFullLogo.png"
-            : "/static/image/StrategicSolutionsLogo.png"
-        }
+        src={"/static/image/StrategicSolutionsLogo.png"}
         sx={{
           position: "absolute",
           height: "64px",
@@ -41,8 +29,6 @@ function Logo() {
           left: "50%",
         }}
       />
-      {/* <LogoSignWrapper>
-      </LogoSignWrapper> */}
     </LogoWrapper>
   );
 }

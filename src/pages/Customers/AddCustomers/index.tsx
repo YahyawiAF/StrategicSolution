@@ -3,7 +3,7 @@ import Page from "@components/Page";
 import SubPage from "@components/SubPage.tsx";
 import ADDForm from "./AddForm";
 import { useParams } from "react-router-dom";
-import { Get } from "~/repositories/company.service";
+import { Get } from "~/repositories/patients.servise";
 
 interface IDefaultValues {
   name: string;
@@ -24,7 +24,7 @@ function CustomersPage() {
 
   const getCompany = useCallback(
     async (id: string) => {
-      Get(id).then(
+      await Get(id).then(
         data => {
           setCompany(data.data[0]);
         },
@@ -45,8 +45,9 @@ function CustomersPage() {
   return (
     <>
       <Page>
-        <SubPage title={id ? "Modify Customer" : "Create Customer"}>
-          <ADDForm company={company} id={id} />
+        <SubPage title={"Patient Details"}>
+          {/* <ADDForm company={company} id={id} /> */}
+          <h1>Add Patients Details in here</h1>
         </SubPage>
       </Page>
     </>

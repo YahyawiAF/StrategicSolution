@@ -34,6 +34,7 @@ function ProductPage() {
     limit: 50,
   });
   const [totalRows, setTotalRows] = useState(0);
+  const [menu, setMenu] = useState<boolean>(false);
 
   const ServiceRepo = useRef(getAllProducts);
   const ServiceDeleteRepo = useRef(Delete);
@@ -96,6 +97,7 @@ function ProductPage() {
               itemlist={products}
               basicRoute={"products"}
               totalRows={totalRows}
+              onOpenMenu={setMenu}
             />
           </Else>
         </If>
