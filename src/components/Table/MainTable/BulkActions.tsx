@@ -55,12 +55,14 @@ IconCustomButton.displayName = "IconCustomButton";
 interface IBulkActions {
   onHandleSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   AddItemAction: () => void;
+  onOpenMenu: (record?: any) => void;
   title: string;
 }
 
 const BulkActions: FC<IBulkActions> = ({
   onHandleSearch,
   AddItemAction,
+  onOpenMenu,
   title,
 }) => {
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
@@ -122,7 +124,7 @@ const BulkActions: FC<IBulkActions> = ({
           <IconCustomButton onClick={openMenu}>
             <FilterIcon />
           </IconCustomButton>
-          <IconCustomButton onClick={AddItemAction}>
+          <IconCustomButton onClick={() => onOpenMenu()}>
             <AddIcon />
           </IconCustomButton>
         </Box>

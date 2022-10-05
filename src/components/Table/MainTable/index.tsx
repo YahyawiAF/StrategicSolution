@@ -266,9 +266,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
       />
       <Box p={1}>
         <BulkActions
+          title={sharedData.title}
+          onOpenMenu={onOpenMenu}
           AddItemAction={AddItemAction}
           onHandleSearch={onHandleSearch}
-          title={sharedData.title}
         />
       </Box>
       <Divider />

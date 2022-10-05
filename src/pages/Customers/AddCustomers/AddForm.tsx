@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Grid, Divider, Box, styled, Snackbar } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 // components
-import { FormProvider, RHFTextField } from "@components/hook-form";
+import { FormProvider, FormInput } from "@components/hook-form";
 import { MethodeType } from "~/types";
 import { Create, Modify } from "~/repositories/company.service";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
@@ -28,7 +28,17 @@ export interface State extends SnackbarOrigin {
 const SaveButton = styled(LoadingButton)(
   ({ theme }) => `
     && {
-      background: #1CB7EC;
+      background: #282F6C;
+      width:${theme.typography.pxToRem(111)};
+      padding:${theme.typography.pxToRem(14)};
+    }
+`
+);
+
+const CancelButton = styled(LoadingButton)(
+  ({ theme }) => `
+    && {
+      background: #DADADA;
       width:${theme.typography.pxToRem(111)};
       padding:${theme.typography.pxToRem(14)};
     }
@@ -36,14 +46,14 @@ const SaveButton = styled(LoadingButton)(
 );
 
 const FormInputList = [
-  { name: "Customer Name", type: "" },
-  { name: "Location", type: "" },
-  { name: "Orders", type: "" },
+  { name: "Patient Name", type: "" },
+  { name: "Last Name", type: "" },
+  { name: "Date Of Birth", type: "" },
   // { name: "address1", type: "" },
   // { name: "address2", type: "" },
-  { name: "Registered", type: "" },
-  { name: "Status", type: "" },
-  // { name: "country", type: "" },
+  { name: "City", type: "" },
+  { name: "State", type: "" },
+  { name: "Phone Number", type: "" },
   // { name: "comments", type: "" },
   // { name: "tags", type: "" },
 ];
@@ -75,9 +85,10 @@ const DEFAULT_VALUES: IDefaultValues = {
 interface IPropscompanyForm {
   company: IDefaultValues | null;
   id?: string;
+  onOpenMenu: (record?: any) => void;
 }
 
-const companyForm: FC<IPropscompanyForm> = ({ company, id }) => {
+const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: "top",
@@ -179,13 +190,26 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id }) => {
       >
         <Grid sx={{ pb: 3 }} container spacing={2}>
           {FormInputList.map((field, index) => (
-            <Grid key={index} item xs={12} md={6} lg={6}>
-              <RHFTextField key={index} name={field.name} label={field.name} />
+            <Grid key={index} item>
+              <FormInput key={index} name={field.name} label={field.name} />
             </Grid>
           ))}
         </Grid>
         <Divider />
-        <Box display="flex" flex={1} p={2} justifyContent="flex-end">
+        <Box
+          display="flex !important"
+          p="18px 0"
+          gap="15px"
+          justifyContent="start"
+        >
+          <CancelButton
+            onClick={() => onOpenMenu()}
+            size="large"
+            type="button"
+            variant="contained"
+          >
+            Cancel
+          </CancelButton>
           <SaveButton
             size="large"
             type="submit"

@@ -17,7 +17,7 @@ import { getAllPatient } from "~/repositories/patients.servise";
 import ADDForm from "./AddCustomers/AddForm";
 import { useParams } from "react-router-dom";
 import { Get } from "~/repositories/patients.servise";
-
+import { ReactComponent as Close } from "~/assets/icons/close.svg";
 import {
   Box,
   Drawer,
@@ -26,6 +26,7 @@ import {
   useTheme,
   darken,
   BoxTypeMap,
+  Typography,
 } from "@mui/material";
 
 interface IDefaultValues {
@@ -125,7 +126,7 @@ function CustomersPage() {
   );
 
   const handelEdit = useCallback(
-    (record: any) => {
+    (record?: any) => {
       setIsEditMenuVisible(!isEditMenuVisible);
       setCompany(record);
     },
@@ -150,8 +151,17 @@ function CustomersPage() {
           onOpenMenu={handelEdit}
         />
         <EditSideMenu visible={isEditMenuVisible}>
-          <p onClick={() => setIsEditMenuVisible(false)}>Add New Customer</p>
-          <ADDForm company={company} id={id} />
+          <Box p="25px" display="flex" justifyContent="space-between">
+            <Typography
+              variant="h6"
+              onClick={() => setIsEditMenuVisible(false)}
+            >
+              Add New Patient
+            </Typography>
+            <Close onClick={() => setIsEditMenuVisible(false)} />
+          </Box>
+          <Divider />
+          <ADDForm company={company} id={id} onOpenMenu={handelEdit} />
         </EditSideMenu>
       </Page>
     </>
@@ -162,7 +172,7 @@ const EditSideMenu = styled("div", {
   shouldForwardProp: prop => prop !== "visible",
 })<EditMenuProps>(
   ({ theme, visible }) => `
-  width: ${visible ? "40%" : "0"};
+  width: ${visible ? "33%" : "0"};
   position: absolute;
   height: 100vh;
   top: 0;
@@ -170,9 +180,11 @@ const EditSideMenu = styled("div", {
   background: #FFF;
   z-index: 11;
   transition: width 0.5s;
+  box-shadow: -4px 0px 84px rgba(0, 0, 0, 0.1);
   form {
+    padding: 25px;
     div {
-      display:  ${visible ? "block" : "none"};
+      display: block;
     }
   }
 
