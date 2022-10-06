@@ -29,7 +29,12 @@ const FormInput: FC<FormInputProps> = ({ name, label, ...other }) => {
           <Label shrink={true} htmlFor={name}>
             {label}
           </Label>
-          <TextField disableUnderline id={name} {...other} />
+          <TextField
+            disableUnderline
+            id={name}
+            value={field.value}
+            {...other}
+          />
           {error && (
             <FormHelperText id={name} error>
               {error?.message}
@@ -44,12 +49,12 @@ const FormInput: FC<FormInputProps> = ({ name, label, ...other }) => {
 const TextField = styled(Input)(({ theme }) => ({
   border: "1px solid #E3E3ED",
   borderRadius: 10,
-  height: "56px",
   marginTop: "24px !important",
   background: "#EAEAEA",
   [".MuiInputBase-input"]: {
     padding: "10px 0 15px 10px",
     borderRadius: 10,
+    height: "29px",
     "::placeholder": {
       fontSize: theme.typography.pxToRem(12),
     },

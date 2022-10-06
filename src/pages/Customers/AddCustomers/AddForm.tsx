@@ -9,7 +9,7 @@ import { LoadingButton } from "@mui/lab";
 // components
 import { FormProvider, FormInput } from "@components/hook-form";
 import { MethodeType } from "~/types";
-import { Create, Modify } from "~/repositories/company.service";
+import { Create, Modify } from "~/repositories/patients.servise";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { SnackbarOrigin } from "@mui/material/Snackbar";
 import { useNavigate } from "react-router-dom";
@@ -46,49 +46,39 @@ const CancelButton = styled(LoadingButton)(
 );
 
 const FormInputList = [
-  { name: "Patient Name", type: "" },
-  { name: "Last Name", type: "" },
-  { name: "Date Of Birth", type: "" },
+  { name: "Patient Name", field: "firstname", type: "" },
+  { name: "Last Name", field: "lastname", type: "" },
+  { name: "Date Of Birth", field: "dateofbirth", type: "" },
   // { name: "address1", type: "" },
   // { name: "address2", type: "" },
-  { name: "City", type: "" },
-  { name: "State", type: "" },
-  { name: "Phone Number", type: "" },
+  { name: "City", field: "city", type: "" },
+  { name: "State", field: "state", type: "" },
+  { name: "Phone Number", field: "patientnumber", type: "" },
   // { name: "comments", type: "" },
   // { name: "tags", type: "" },
 ];
 interface IDefaultValues {
   name: string;
+  lastName: string;
   phone: string;
-  email: string;
-  address1: string;
-  address2: string;
   city: string;
   state: string;
-  country: string;
-  comments: string;
-  tags: string;
 }
 const DEFAULT_VALUES: IDefaultValues = {
   name: "",
+  lastName: "",
   phone: "",
-  email: "",
-  address1: "",
-  address2: "",
   city: "",
   state: "",
-  country: "",
-  comments: "",
-  tags: "",
 };
 
 interface IPropscompanyForm {
-  company: IDefaultValues | null;
+  patient: any | null;
   id?: string;
   onOpenMenu: (record?: any) => void;
 }
 
-const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
+const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: "top",
@@ -123,7 +113,7 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
 
   const methods = useForm({
     resolver: yupResolver(RegisterSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: patient,
   });
 
   const {
@@ -133,23 +123,24 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
   } = methods;
 
   const resetAsyncForm = useCallback(
-    async (company: IDefaultValues) => {
-      reset(company);
+    async (patient: IDefaultValues) => {
+      reset(patient);
     },
-    [reset, company]
+    [reset, patient]
   );
-
+  console.log("patient", patient);
   useEffect(() => {
-    if (company) {
-      resetAsyncForm(company as unknown as IDefaultValues);
-      reset(company);
+    if (patient) {
+      resetAsyncForm(patient as unknown as IDefaultValues);
+    } else {
+      resetAsyncForm(null as unknown as IDefaultValues);
     }
-  }, [company]);
+  }, [patient]);
 
   const onSubmit = useCallback(
     async (data: IDefaultValues) => {
-      if (id) {
-        Modify(id, data).then(
+      if (patient) {
+        Modify(patient.id, data).then(
           async () => {
             navigate(`/dashboard/`);
             handleOpen();
@@ -173,6 +164,8 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
     [id, handleOpen]
   );
 
+  console.log("state", methods.getValues());
+
   return (
     <>
       {/* <h1>Add Patients Details in here</h1> */}
@@ -191,7 +184,12 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
         <Grid sx={{ pb: 3 }} container spacing={2}>
           {FormInputList.map((field, index) => (
             <Grid key={index} item>
-              <FormInput key={index} name={field.name} label={field.name} />
+              <FormInput
+                key={index}
+                name={field.field}
+                label={field.name}
+                placeholder={`${field.name}...`}
+              />
             </Grid>
           ))}
         </Grid>
@@ -205,7 +203,7 @@ const companyForm: FC<IPropscompanyForm> = ({ company, id, onOpenMenu }) => {
           <CancelButton
             onClick={() => onOpenMenu()}
             size="large"
-            type="button"
+            type="reset"
             variant="contained"
           >
             Cancel

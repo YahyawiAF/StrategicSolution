@@ -65,7 +65,7 @@ const CUSTOMER_SHARED_DATA: Record<string, any> = {
 };
 
 function CustomersPage() {
-  const [company, setCompany] = useState<IDefaultValues | null>(null);
+  const [patient, setPatient] = useState<IDefaultValues | null>(null);
   const { id } = useParams();
   const [customers, setCustomers] = useState<ICompany[]>([]);
   const [pagination, setPagination] = useState<IPagination>({
@@ -128,12 +128,14 @@ function CustomersPage() {
   const handelEdit = useCallback(
     (record?: any) => {
       setIsEditMenuVisible(!isEditMenuVisible);
-      setCompany(record);
+      setPatient(record);
     },
     [isEditMenuVisible]
   );
 
-  console.log("company", company);
+  useEffect(() => {
+    if (!isEditMenuVisible) setPatient(null);
+  }, [isEditMenuVisible, setPatient]);
 
   return (
     <>
@@ -156,12 +158,12 @@ function CustomersPage() {
               variant="h6"
               onClick={() => setIsEditMenuVisible(false)}
             >
-              Add New Patient
+              {patient ? "Add New Patient" : "Edit Patient"}
             </Typography>
             <Close onClick={() => setIsEditMenuVisible(false)} />
           </Box>
           <Divider />
-          <ADDForm company={company} id={id} onOpenMenu={handelEdit} />
+          <ADDForm patient={patient} id={id} onOpenMenu={handelEdit} />
         </EditSideMenu>
       </Page>
     </>

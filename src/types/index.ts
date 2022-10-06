@@ -1,3 +1,4 @@
+export * from "./auth";
 export * from "./theme";
 export * from "./hooksForm";
 export * from "./patienTable";
