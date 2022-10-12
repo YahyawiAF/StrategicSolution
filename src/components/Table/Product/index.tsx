@@ -23,7 +23,7 @@ import { makeStyles } from "@mui/styles";
 
 import Label from "@components/Label";
 import { ServiceStatus } from "~/types/patienTable";
-import { IProducts, IPagination } from "~/types";
+import { IPagination, IProducts } from "~/types";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import BulkActions from "./BulkActions";
@@ -210,7 +210,7 @@ const ProductTable: FC<IProductTableProps> = ({
   const theme = useTheme();
 
   const EditProduct = (id: number, name: string): void => {
-    navigate(`/products/${id}?name=${name}`);
+    navigate(`/insurance/${id}?name=${name}`);
   };
 
   const onHandleSearch = (event: ChangeEvent<HTMLInputElement>): void => {

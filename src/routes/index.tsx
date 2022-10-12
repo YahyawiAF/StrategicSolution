@@ -15,7 +15,7 @@ const About = withFallback(React.lazy(() => import("~/pages/Customers")));
 const Orders = withFallback(React.lazy(() => import("~/pages/Orders")));
 const Pricings = withFallback(React.lazy(() => import("~/pages/Pricings")));
 const AddCustomers = withFallback(
-  React.lazy(() => import("~/pages/Customers/AddCustomers"))
+  React.lazy(() => import("~/pages/Customers/Profile"))
 );
 const AddProduct = withFallback(
   React.lazy(() => import("~/pages/Products/AddProduct"))
@@ -34,13 +34,13 @@ const RenderRouter: React.FC = () => {
         <Route path="/register" element={<Register />} />
       </Route>
       <Route element={<MainLayout />}>
-        <Route path="/dashboard" element={<LandingPage />}></Route>
-        <Route path="/dashboard/:id" element={<AddCustomers />} />
-        <Route path="/dashboard/add-customer" element={<AddCustomers />} />
+        <Route path="/patient" element={<LandingPage />}></Route>
+        <Route path="/patient/:id" element={<AddCustomers />} />
+        <Route path="/patient/add-customer" element={<AddCustomers />} />
 
-        <Route path="/products/add-product" element={<AddProduct />} />
-        <Route path="/products/:id" element={<AddProduct />} />
-        <Route path="/products" element={<Products />} />
+        <Route path="/insurance/add-product" element={<AddProduct />} />
+        <Route path="/insurance/:id" element={<AddProduct />} />
+        <Route path="/insurance" element={<Products />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/pricings" element={<Pricings />} />

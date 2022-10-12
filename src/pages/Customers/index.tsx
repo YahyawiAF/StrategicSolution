@@ -9,11 +9,9 @@ import {
 
 import MainTable from "@components/Table/MainTable";
 
-import { getAllCompany, Delete } from "~/repositories/company.service";
-
 import { ICompany } from "~/types";
 import Page from "@components/Page";
-import { getAllPatient } from "~/repositories/patients.servise";
+import { getAllPatient, Delete } from "~/repositories/patients.servise";
 import ADDForm from "./AddCustomers/AddForm";
 import { useParams } from "react-router-dom";
 import { Get } from "~/repositories/patients.servise";
@@ -60,7 +58,7 @@ const TABLE_PATIENTS_STRUCTURE: Array<string> = [
 ];
 
 const CUSTOMER_SHARED_DATA: Record<string, any> = {
-  addRoute: "/dashboard/add-customer",
+  addRoute: "/patient/add-customer",
   title: "Patients List",
 };
 
@@ -96,7 +94,7 @@ function CustomersPage() {
     getCompany(pagination);
   }, [pagination, getCompany]);
 
-  const onDeleteCustomer = useCallback(
+  const onDeletePatient = useCallback(
     async (id: number) => {
       await DeleteService.current(id).then(
         async (response: any) => {
@@ -145,9 +143,9 @@ function CustomersPage() {
           handleLimitChange={handleLimitChange}
           handlePageChange={handlePageChange}
           pagination={pagination}
-          onDeleteItem={onDeleteCustomer}
+          onDeleteItem={onDeletePatient}
           itemlist={customers}
-          basicRoute={"dashboard"}
+          basicRoute={"patient"}
           sharedData={CUSTOMER_SHARED_DATA}
           totalRows={totalRows}
           onOpenMenu={handelEdit}

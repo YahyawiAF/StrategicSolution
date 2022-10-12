@@ -22,7 +22,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (data: any) => {
     setUser(data);
-    navigate("/dashboard");
+    navigate("/patient");
   };
 
   const logout = () => {

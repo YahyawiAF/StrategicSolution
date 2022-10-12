@@ -38,7 +38,7 @@ export default function Login() {
   const { user } = useAuth();
 
   if (user) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/patient" />;
   }
   const mdUp = useResponsive("up", "md");
   return (

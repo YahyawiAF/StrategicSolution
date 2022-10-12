@@ -7,40 +7,75 @@ import {
   lazy,
 } from "react";
 
+import {
+  Box,
+  Drawer,
+  styled,
+  Divider,
+  useTheme,
+  darken,
+  BoxTypeMap,
+  Typography,
+} from "@mui/material";
+
+import { ReactComponent as Close } from "~/assets/icons/close.svg";
+
+import ADDForm from "./AddProduct/AddForm";
 import Page from "@components/Page";
-import { getAllProducts, Delete } from "~/repositories/product.service";
-import { IProducts, IPagination } from "~/types";
+import { getAllInsurances, Delete } from "~/repositories/insurance.servise";
+import { IProducts, IDefaultValuesProducts, IPagination } from "~/types";
 import { If, Then, Else } from "react-if";
 import SuspenseLoader from "@components/SuspenseLoader";
+import { useParams } from "react-router";
 
-const MainTable = lazy(() => import("@components/Table/MainTable"));
+const InsuranceTable = lazy(() => import("@components/Table/InsuranceTable"));
+
+interface IDefaultValues {
+  name: string;
+  phone: string;
+  email: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  country: string;
+  comments: string;
+  tags: string;
+}
+
+interface EditMenuProps {
+  visible: boolean;
+}
 
 const TABLE_PRODUCTSS_STRUCTURE: Array<string> = [
-  "name",
-  "sku",
-  "type",
-  "listprice",
+  "insurancename",
+  "address",
+  "city",
+  "state",
 ];
 
 const PRODUCT_SHARED_DATA: Record<string, string> = {
-  addRoute: "/products/add-product",
-  title: "Product List",
+  addRoute: "/insurance/add-insurance",
+  title: "Insurance List",
 };
 
 function ProductPage() {
+  const [patient, setPatient] = useState<IDefaultValuesProducts | null>(null);
+  const [isEditMenuVisible, setIsEditMenuVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<IProducts[]>([]);
   const [pagination, setPagination] = useState<IPagination>({
     page: 0,
     limit: 50,
   });
   const [totalRows, setTotalRows] = useState(0);
-  const [menu, setMenu] = useState<boolean>(false);
 
-  const ServiceRepo = useRef(getAllProducts);
+  const ServiceRepo = useRef(getAllInsurances);
   const ServiceDeleteRepo = useRef(Delete);
 
   const getAll = useCallback(
     async (pagination: IPagination) => {
+      setIsLoading(true);
       await ServiceRepo.current(pagination).then(
         (response: any) => {
           setProducts(response.data.data);
@@ -50,9 +85,11 @@ function ProductPage() {
           console.log(error);
         }
       );
+      setIsLoading(false);
     },
     [ServiceRepo]
   );
+
   useEffect(() => {
     getAll(pagination);
   }, [pagination, getAll]);
@@ -69,7 +106,7 @@ function ProductPage() {
     async (id: number) => {
       await ServiceDeleteRepo.current(id).then(
         async (response: any) => {
-          setProducts(response.data.data);
+          // setProducts(response.data.data);
           await getAll(pagination);
         },
         (error: any) => {
@@ -79,15 +116,28 @@ function ProductPage() {
     },
     [ServiceDeleteRepo, pagination, getAll]
   );
+
+  const handelEdit = useCallback(
+    (record?: any) => {
+      setIsEditMenuVisible(!isEditMenuVisible);
+      setPatient(record);
+    },
+    [isEditMenuVisible]
+  );
+
+  useEffect(() => {
+    if (!isEditMenuVisible) setPatient(null);
+  }, [isEditMenuVisible, setPatient]);
+
   return (
     <>
       <Page>
-        <If condition={products.length === 0}>
+        <If condition={isLoading}>
           <Then>
             <SuspenseLoader />
           </Then>
           <Else>
-            <MainTable
+            <InsuranceTable
               sharedData={PRODUCT_SHARED_DATA}
               tableRowColumns={TABLE_PRODUCTSS_STRUCTURE}
               pagination={pagination}
@@ -97,13 +147,55 @@ function ProductPage() {
               itemlist={products}
               basicRoute={"products"}
               totalRows={totalRows}
-              onOpenMenu={setMenu}
+              onOpenMenu={handelEdit}
             />
           </Else>
         </If>
+        <EditSideMenu visible={isEditMenuVisible}>
+          <Box p="25px" display="flex" justifyContent="space-between">
+            <Typography
+              variant="h6"
+              onClick={() => setIsEditMenuVisible(false)}
+            >
+              {patient ? "Add New Insurance" : "Edit Insurance"}
+            </Typography>
+            <Close onClick={() => setIsEditMenuVisible(false)} />
+          </Box>
+          <Divider />
+          <ADDForm
+            insurance={patient}
+            id={patient?.id}
+            onOpenMenu={handelEdit}
+            onFetchData={getAll}
+            pagination={pagination}
+          />
+        </EditSideMenu>
       </Page>
     </>
   );
 }
+
+const EditSideMenu = styled("div", {
+  shouldForwardProp: prop => prop !== "visible",
+})<EditMenuProps>(
+  ({ theme, visible }) => `
+  width: ${visible ? "33%" : "0"};
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  right: ${visible ? "0" : "-46px"};
+  background: #FFF;
+  z-index: 11;
+  transition: width 0.5s;
+  box-shadow: -4px 0px 84px rgba(0, 0, 0, 0.1);
+  form {
+    padding: 25px;
+    div {
+      display: block;
+    }
+  }
+
+`
+);
 
 export default ProductPage;

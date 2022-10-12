@@ -49,25 +49,21 @@ const FormInputList = [
   { name: "Patient Name", field: "firstname", type: "" },
   { name: "Last Name", field: "lastname", type: "" },
   { name: "Date Of Birth", field: "dateofbirth", type: "" },
-  // { name: "address1", type: "" },
-  // { name: "address2", type: "" },
   { name: "City", field: "city", type: "" },
   { name: "State", field: "state", type: "" },
   { name: "Phone Number", field: "patientnumber", type: "" },
-  // { name: "comments", type: "" },
-  // { name: "tags", type: "" },
 ];
 interface IDefaultValues {
-  name: string;
-  lastName: string;
-  phone: string;
+  firstname: string;
+  lastname: string;
+  patientnumber: string;
   city: string;
   state: string;
 }
 const DEFAULT_VALUES: IDefaultValues = {
-  name: "",
-  lastName: "",
-  phone: "",
+  firstname: "",
+  lastname: "",
+  patientnumber: "",
   city: "",
   state: "",
 };
@@ -97,11 +93,11 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
   }, []);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required("phone name required"),
-    phone: Yup.string().required("phone name required"),
-    email: Yup.string()
-      .email("Email must be a valid email address")
-      .required("Email is required"),
+    firstname: Yup.string().required("Name required"),
+    patientnumber: Yup.string().required("phone number required"),
+    // email: Yup.string()
+    //   .email("Email must be a valid email address")
+    //   .required("Email is required"),
     // address1: Yup.string().required("address1 name required"),
     // address2: Yup.string().required("address2 name required"),
     city: Yup.string().required("city name required"),
@@ -113,7 +109,7 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
 
   const methods = useForm({
     resolver: yupResolver(RegisterSchema),
-    defaultValues: patient,
+    defaultValues: DEFAULT_VALUES,
   });
 
   const {
@@ -128,12 +124,12 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
     },
     [reset, patient]
   );
-  console.log("patient", patient);
+
   useEffect(() => {
     if (patient) {
       resetAsyncForm(patient as unknown as IDefaultValues);
     } else {
-      resetAsyncForm(null as unknown as IDefaultValues);
+      resetAsyncForm(DEFAULT_VALUES as unknown as IDefaultValues);
     }
   }, [patient]);
 
@@ -142,7 +138,7 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
       if (patient) {
         Modify(patient.id, data).then(
           async () => {
-            navigate(`/dashboard/`);
+            navigate(`/patient/`);
             handleOpen();
           },
           error => {
@@ -150,10 +146,10 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
           }
         );
       } else {
-        await Create(data).then(
+        await Create({ ...data, dateofbirth: new Date(), suffix: "test" }).then(
           async () => {
             handleOpen();
-            navigate(`/dashboard/`);
+            navigate(`/patient/`);
           },
           error => {
             console.log("error", error);
@@ -161,14 +157,14 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
         );
       }
     },
-    [id, handleOpen]
+    [patient, handleOpen]
   );
 
-  console.log("state", methods.getValues());
+  console.log("patient", patient);
+  console.log("state", methods.formState.errors);
 
   return (
     <>
-      {/* <h1>Add Patients Details in here</h1> */}
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}

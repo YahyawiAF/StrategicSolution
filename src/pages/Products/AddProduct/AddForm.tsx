@@ -12,15 +12,17 @@ import { useNavigate } from "react-router-dom";
 
 import {
   MethodeType,
-  IDefaultValuesProducts as IDefaultValues,
   IPropsproductForm,
+  IDefaultValuesProducts as IDefaultValues,
 } from "~/types";
 import {
+  FormInput,
   FormProvider,
   RHFTextField,
   RHSelectDropDown,
 } from "@components/hook-form";
-import { Create, Modify } from "~/repositories/product.service";
+import { Create, Modify } from "~/repositories/insurance.servise";
+import { nanoid } from "@reduxjs/toolkit";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -36,7 +38,17 @@ export interface State extends SnackbarOrigin {
 const SaveButton = styled(LoadingButton)(
   ({ theme }) => `
     && {
-      background: #1CB7EC;
+      background: #282F6C;
+      width:${theme.typography.pxToRem(111)};
+      padding:${theme.typography.pxToRem(14)};
+    }
+`
+);
+
+const CancelButton = styled(LoadingButton)(
+  ({ theme }) => `
+    && {
+      background: #DADADA;
       width:${theme.typography.pxToRem(111)};
       padding:${theme.typography.pxToRem(14)};
     }
@@ -44,31 +56,13 @@ const SaveButton = styled(LoadingButton)(
 );
 
 const FormInputList = [
-  { name: "Name", type: "" },
-  { name: "SKU", type: "" },
-  { name: "Type", type: "" },
-  { name: "ListPrice", type: "" },
+  { name: "Insurance Name", field: "insurancename", type: "" },
+  { name: "Email", field: "email", type: "" },
+  { name: "Contact Name", field: "contactname", type: "" },
+  { name: "City", field: "city", type: "" },
+  { name: "State", field: "state", type: "" },
+  { name: "Phone Number", field: "phone", type: "" },
 ];
-
-const DEFAULT_VALUES: IDefaultValues = {
-  ProductCategoryID: 0,
-  Name: "",
-  Sales_Description: "",
-  SKU: "",
-  Type: 0,
-  SalesPriceRate: "",
-  IncomeAccount: 1,
-  ExpenseAccount: 1,
-  InventoryAssetAccount: 1,
-  PurchaseCost: 0,
-  QuantityAsOfDate: new Date(),
-  ListPrice: 0,
-  GP_1: 0,
-  Discount_10: 0,
-  GP_2: 0,
-  Discount_20: 0,
-  GP_3: 0,
-};
 
 const list: { [key: string]: string } = {
   IncomeAccount: "Accounts",
@@ -77,7 +71,13 @@ const list: { [key: string]: string } = {
   ProductCategoryID: "ProductCategory",
 };
 
-const productForm: FC<IPropsproductForm> = ({ product, id, listForienKey }) => {
+const productForm: FC<IPropsproductForm> = ({
+  id,
+  insurance,
+  pagination,
+  onOpenMenu,
+  onFetchData,
+}) => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: "top",
@@ -95,12 +95,22 @@ const productForm: FC<IPropsproductForm> = ({ product, id, listForienKey }) => {
     setState({ ...state, open: true });
   }, []);
 
+  const DEFAULT_VALUES: IDefaultValues = {
+    insurancename: "",
+    email: "",
+    contactname: "",
+    city: "",
+    state: "",
+    phone: "",
+  };
+
   const RegisterSchema = Yup.object().shape({
-    Name: Yup.string().required("Name required"),
-    SKU: Yup.string().required("SKU name required"),
-    Type: Yup.number().required("Type name required"),
-    ListPrice: Yup.number().required("List price name required"),
-    ProductCategoryID: Yup.number().required("ProductCategoryID required"),
+    insurancename: Yup.string().required("Name is required"),
+    email: Yup.string().required("Email is required"),
+    contactname: Yup.string().required("Contact name required"),
+    city: Yup.string().required("city is required"),
+    state: Yup.string().required("State required"),
+    phone: Yup.string().required("Phone Number is required"),
   });
 
   const methods = useForm({
@@ -115,36 +125,56 @@ const productForm: FC<IPropsproductForm> = ({ product, id, listForienKey }) => {
   } = methods;
 
   const resetAsyncForm = useCallback(
-    async (product: IDefaultValues) => {
-      reset(product);
+    async (insurance: IDefaultValues) => {
+      reset(insurance);
     },
-    [reset, product]
+    [reset]
   );
 
   useEffect(() => {
-    if (product) {
-      resetAsyncForm(product as unknown as IDefaultValues);
-      reset(product);
+    if (insurance) {
+      resetAsyncForm(insurance as unknown as IDefaultValues);
+    } else {
+      resetAsyncForm(DEFAULT_VALUES as unknown as IDefaultValues);
     }
-  }, [product]);
+  }, [insurance]);
+
+  console.log("insurance", insurance);
+  console.log("id", id);
 
   const onSubmit = useCallback(
     async (data: IDefaultValues) => {
       if (id) {
-        Modify(id, data).then(
+        Modify(id, {
+          ...data,
+          adjustername: "test",
+          address: "test",
+          address1: "test",
+          zip: "",
+          fax: "",
+          contactphone: "",
+        }).then(
           async () => {
-            navigate(`/products/`);
-            handleOpen();
+            onOpenMenu();
+            onFetchData(pagination);
           },
           (error: any) => {
             console.log("error", error);
           }
         );
       } else {
-        await Create(data).then(
+        await Create({
+          ...data,
+          adjustername: "test",
+          address: "test",
+          address1: "test",
+          zip: "",
+          fax: "",
+          contactphone: "",
+        }).then(
           async () => {
-            handleOpen();
-            navigate(`/products/`);
+            onOpenMenu();
+            onFetchData(pagination);
           },
           (error: any) => {
             console.log("error", error);
@@ -152,7 +182,7 @@ const productForm: FC<IPropsproductForm> = ({ product, id, listForienKey }) => {
         );
       }
     },
-    [id, handleOpen, Modify, Create]
+    [id, handleOpen, Modify, Create, onFetchData]
   );
 
   return (
@@ -171,27 +201,31 @@ const productForm: FC<IPropsproductForm> = ({ product, id, listForienKey }) => {
       >
         <Grid sx={{ pb: 3 }} container spacing={2}>
           {FormInputList.map((field, index) => (
-            <Grid key={index} item xs={12} md={6} lg={6}>
-              <RHFTextField key={index} name={field.name} label={field.name} />
+            <Grid key={index} item>
+              <FormInput
+                key={index}
+                name={field.field}
+                label={field.name}
+                placeholder={`${field.name}...`}
+              />
             </Grid>
           ))}
-          {Object.keys(list as any).map((key, index) => {
-            return (
-              Boolean(listForienKey[list[key]]) && (
-                <Grid key={index} item xs={12} md={6} lg={6}>
-                  <RHSelectDropDown
-                    list={listForienKey[list[key]]}
-                    key={index}
-                    name={key}
-                    label={key}
-                  />
-                </Grid>
-              )
-            );
-          })}
         </Grid>
         <Divider />
-        <Box display="flex" flex={1} p={2} justifyContent="flex-end">
+        <Box
+          display="flex !important"
+          p="18px 0"
+          gap="15px"
+          justifyContent="start"
+        >
+          <CancelButton
+            onClick={() => onOpenMenu()}
+            size="large"
+            type="reset"
+            variant="contained"
+          >
+            Cancel
+          </CancelButton>
           <SaveButton
             size="large"
             type="submit"

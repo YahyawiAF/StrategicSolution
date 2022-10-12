@@ -16,6 +16,8 @@ import {
   Typography,
   TextField,
   IconButton,
+  Button,
+  Tooltip,
 } from "@mui/material";
 
 import {
@@ -24,10 +26,17 @@ import {
   Print,
   AddCircleTwoTone,
   Search,
-  Delete,
 } from "@mui/icons-material";
 
 import { styled } from "@mui/material/styles";
+
+import { ReactComponent as FilterIcon } from "~/assets/icons/filter.svg";
+import { ReactComponent as ActivateIcon } from "~/assets/icons/activate.svg";
+import { ReactComponent as LinesIcon } from "~/assets/icons/lines.svg";
+import { ReactComponent as PinIcon } from "~/assets/icons/pin.svg";
+import { ReactComponent as CopyIcon } from "~/assets/icons/copy.svg";
+import { ReactComponent as PrinterIcon } from "~/assets/icons/printer.svg";
+import { ReactComponent as AddIcon } from "~/assets/icons/add.svg";
 
 const IconCustomButton = ({
   onClick,
@@ -45,42 +54,25 @@ IconCustomButton.displayName = "IconCustomButton";
 
 interface IBulkActions {
   onHandleSearch: (event: ChangeEvent<HTMLInputElement>) => void;
-  search?: string;
+  AddItemAction: () => void;
+  onOpenMenu: (record?: any) => void;
+  title: string;
 }
 
-const CustomTextField = styled(TextField)(
-  () => `
-    && {
-      box-shadow: unset;
-      border-radius:0;
-      .MuiInputBase-root {
-        border-radius: 0;
-        input {
-          padding: 7.5px 10px;
-        }
-      }
-    }
-`
-);
-
-const BulkActions: FC<IBulkActions> = ({ onHandleSearch, search }) => {
+const BulkActions: FC<IBulkActions> = ({
+  onHandleSearch,
+  AddItemAction,
+  onOpenMenu,
+  title,
+}) => {
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const moreRef = useRef<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
 
-  const ToAddProduct = useCallback((): void => {
-    navigate("/insurance/add-product");
-  }, [navigate]);
-
   const openMenu = useCallback((): void => {
-    console.log("openMenu");
+    menuOpen(true);
   }, []);
-
-  // const openDeleteModal = useCallback((): void => {
-  //   setModalOpen(true);
-  // }, []);
 
   const closeMenu = (): void => {
     menuOpen(false);
@@ -91,36 +83,49 @@ const BulkActions: FC<IBulkActions> = ({ onHandleSearch, search }) => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center">
           <Typography variant="h5" color="text.secondary">
-            Product List
+            {title}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          {/* <CustomTextField
-            placeholder="Search"
-            value={search}
-            onChange={onHandleSearch}
-            InputProps={{
-              endAdornment: (
-                <IconCustomButton>
-                  <Search />
-                </IconCustomButton>
-              ),
+          <Button
+            disableRipple
+            startIcon={<LinesIcon />}
+            sx={{
+              background: "#001215",
+              color: "#FFF",
+              display: "flex",
+              gap: "7px",
             }}
-          /> */}
-          {/* <IconCustomButton onClick={openMenu}>
-            <Search />
-          </IconCustomButton> */}
+          >
+            All
+          </Button>
+          <Button
+            disableRipple
+            startIcon={<ActivateIcon />}
+            sx={{
+              background: "#005914",
+              color: "#FFF",
+              display: "flex",
+              gap: "7px",
+              marginLeft: "14px",
+            }}
+          >
+            Activate
+          </Button>
           <IconCustomButton onClick={openMenu}>
-            <FilterAltSharp />
+            <PinIcon />
           </IconCustomButton>
           <IconCustomButton onClick={openMenu}>
-            <ContentCopy />
+            <CopyIcon />
+          </IconCustomButton>
+          <IconCustomButton onClick={AddItemAction}>
+            <PrinterIcon />
           </IconCustomButton>
           <IconCustomButton onClick={openMenu}>
-            <AddCircleTwoTone onClick={ToAddProduct} />
+            <FilterIcon />
           </IconCustomButton>
-          <IconCustomButton onClick={openMenu}>
-            <Print />
+          <IconCustomButton onClick={() => onOpenMenu()}>
+            <AddIcon />
           </IconCustomButton>
         </Box>
       </Box>

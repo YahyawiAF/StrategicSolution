@@ -30,6 +30,7 @@ const HeaderWrapper = styled(Box)(
         position: fixed;
         justify-content: space-between;
         width: 100%;
+        box-shadow: 0px 5px 50px rgb(0 0 0 / 15%);
 `
 );
 

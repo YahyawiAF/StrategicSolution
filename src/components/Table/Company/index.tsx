@@ -209,7 +209,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
   const navigate = useNavigate();
 
   const EditCustomer = (id: number, name: string): void => {
-    navigate(`/dashboard/${id}?name=${name}`);
+    navigate(`/patient/${id}?name=${name}`);
   };
 
   const handleClickOpen = (id: number) => {

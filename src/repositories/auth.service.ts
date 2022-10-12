@@ -9,10 +9,10 @@ import { API_URL } from "~/config/axios";
 //   });
 // };
 
-export const loginService = (username: string, password: string) => {
+export const loginService = (userName: string, password: string) => {
   return axios
     .post(API_URL + "/Account/login", {
-      username,
+      userName,
       password,
     })
     .then(response => {

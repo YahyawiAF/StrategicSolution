@@ -1,2 +1,2 @@
 export * from "./patients";
-export * from "./products";
+export * from "./insurance";

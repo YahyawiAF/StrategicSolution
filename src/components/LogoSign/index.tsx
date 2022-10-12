@@ -17,7 +17,7 @@ const LogoWrapper = styled(Link)(
 
 function Logo() {
   return (
-    <LogoWrapper to="/dashboard">
+    <LogoWrapper to="/patient">
       <Box
         component="img"
         src={"/static/image/StrategicSolutionsLogo.png"}

@@ -15,6 +15,7 @@ const ContainerPage = styled(Container)(
   ({ theme }) => `
     && {
       padding:${theme.typography.pxToRem(15)};
+      overflow: scroll;
     }
 `
 );
@@ -23,9 +24,7 @@ const Page = forwardRef<HTMLInputElement, PropsType>(
   ({ children, ...other }, ref): null | JSX.Element => (
     <>
       <ContainerPage sx={{ height: "100%" }} maxWidth={false} {...other}>
-        <Grid sx={{ height: "100%" }} item xs={12}>
-          {children}
-        </Grid>
+        <Grid>{children}</Grid>
       </ContainerPage>
     </>
   )

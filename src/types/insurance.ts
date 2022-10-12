@@ -1,4 +1,5 @@
 import { IObjectKeys } from "./shared";
+
 export interface IProduct {
   id: string;
   cover: string;
@@ -10,29 +11,22 @@ export interface IProduct {
 }
 
 export interface IDefaultValuesProducts {
-  ProductCategoryID: number;
-  Name: string;
-  Sales_Description: string;
-  SKU: string;
-  Type: number;
-  SalesPriceRate: string;
-  IncomeAccount: number;
-  ExpenseAccount: number;
-  InventoryAssetAccount: number;
-  PurchaseCost: number;
-  QuantityAsOfDate: Date;
-  ListPrice: number;
-  GP_1: number;
-  Discount_10: number;
-  GP_2: number;
-  Discount_20: number;
-  GP_3: number;
+  id?: string;
+  insurancename: string;
+  email: string;
+  contactname: string;
+  city: string;
+  state: string;
+  phone: string;
 }
 
 export interface IPropsproductForm {
-  product: IDefaultValuesProducts | null;
   id?: string;
-  listForienKey: { [key: string]: any };
+  insurance: IDefaultValuesProducts | null;
+  pagination: IPagination;
+  // listForienKey: { [key: string]: any };
+  onOpenMenu: (record?: any) => void;
+  onFetchData: (pagination: IPagination) => Promise<void>;
 }
 
 export interface IPagination {

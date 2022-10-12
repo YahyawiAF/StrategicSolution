@@ -205,7 +205,7 @@ function SidebarMenu() {
                   <Button
                     disableRipple
                     component={RouterLink}
-                    to="/dashboard"
+                    to="/patient"
                     startIcon={<ProfileIcon />}
                   />
                 </Tooltip>
@@ -215,7 +215,7 @@ function SidebarMenu() {
                   <Button
                     disableRipple
                     component={RouterLink}
-                    to="/products"
+                    to="/insurance"
                     startIcon={<UmbrellaIcon />}
                   />
                 </Tooltip>

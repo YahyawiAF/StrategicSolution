@@ -4,7 +4,7 @@ import SubPage from "@components/SubPage.tsx";
 import ADDForm from "./AddForm";
 import { useParams } from "react-router-dom";
 import { Get, GetCategoryList } from "~/repositories/product.service";
-import { IDefaultValuesProducts as IDefaultValues } from "~/types/products";
+import { IDefaultValuesProducts as IDefaultValues } from "~/types/insurance";
 import SuspenseLoader from "@components/SuspenseLoader";
 import { If, Then, Else } from "react-if";
 
@@ -60,12 +60,13 @@ function ProductsPage() {
             <SuspenseLoader />
           </Then>
           <Else>
-            <SubPage title={id ? "Modify Product" : "Create Product"}>
-              <ADDForm
+            <SubPage title={"Insurance Details"}>
+              <h1>Add Insurance Details in here</h1>
+              {/* <ADDForm
                 listForienKey={listForienKey}
                 product={product}
                 id={id}
-              />
+              /> */}
             </SubPage>
           </Else>
         </If>

@@ -76,7 +76,7 @@ const BulkActions: FC<IBulkActions> = ({
   const navigate = useNavigate();
 
   const ToAddProduct = useCallback((): void => {
-    navigate("/dashboard/add-customer");
+    navigate("/patient/add-customer");
   }, [navigate]);
 
   const openMenu = useCallback((): void => {
