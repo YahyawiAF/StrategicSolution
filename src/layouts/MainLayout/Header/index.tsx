@@ -25,11 +25,10 @@ const HeaderWrapper = styled(Box)(
         padding:${theme.typography.pxToRem(14)};
         right: 0;
         z-index: 6;
+        margin-left: 80px;
         background-color: ${alpha(theme.header.background, 0.95)};
         backdrop-filter: blur(3px);
-        position: fixed;
         justify-content: space-between;
-        width: 100%;
         box-shadow: 0px 5px 50px rgb(0 0 0 / 15%);
 `
 );
@@ -45,7 +44,6 @@ function Header() {
         backgroundColor: "white",
         [theme.breakpoints.up("lg")]: {
           left: `${sidebarToggle ? "250px" : theme.sidebar.width}`,
-          width: "auto",
         },
       }}
     >

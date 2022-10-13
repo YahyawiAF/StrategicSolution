@@ -38,7 +38,8 @@ const ColapsableSubPage = ({
 const StyledAccordion = styled(Accordion)(
   () => `
     && {
-      border-radius: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 6px 10px rgb(0 0 0 / 15%);
     }
 `
 );

@@ -152,10 +152,7 @@ function CustomersPage() {
         />
         <EditSideMenu visible={isEditMenuVisible}>
           <Box p="25px" display="flex" justifyContent="space-between">
-            <Typography
-              variant="h6"
-              onClick={() => setIsEditMenuVisible(false)}
-            >
+            <Typography variant="h6">
               {patient ? "Add New Patient" : "Edit Patient"}
             </Typography>
             <Close onClick={() => setIsEditMenuVisible(false)} />

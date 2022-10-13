@@ -8,6 +8,10 @@ import { Box } from "@mui/material";
 import { useParams } from "react-router";
 import { getAllPatientInsurance } from "~/repositories/patientInsurance.servise";
 
+interface EditMenuProps {
+  visible: boolean;
+}
+
 function CustomersPage() {
   const [patient, setPatient] = useState();
   const [insurances, setInsurances] = useState<any[]>([]);
