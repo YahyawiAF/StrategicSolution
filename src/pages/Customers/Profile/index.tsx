@@ -62,19 +62,29 @@ function CustomersPage() {
     <>
       <Page>
         <Box display={"flex"} gap="24px">
-          <Box width="70%" display={"flex"} flexDirection="column" gap="24px">
-            <ColapsableSubPage title={"Patient Details"} expanded={true}>
+          <Box width="60%" display={"flex"} flexDirection="column" gap="24px">
+            <ColapsableSubPage
+              edit={true}
+              add={false}
+              title={"Patient Details"}
+              expanded={true}
+            >
               <Account patient={patient} />
             </ColapsableSubPage>
-            <ColapsableSubPage title={"Notes"}>
+            <ColapsableSubPage edit={true} add={true} title={"Notes"}>
               <Adress title="UNAMED" />
             </ColapsableSubPage>
-            <ColapsableSubPage title={"Documentes"}>
+            <ColapsableSubPage edit={true} add={true} title={"Documentes"}>
               <Adress title="UNAMED" />
             </ColapsableSubPage>
           </Box>
-          <Box width="30%" display={"flex"} flexDirection="column" gap="24px">
-            <ColapsableSubPage title={"Insurance"} expanded={true}>
+          <Box width="40%" display={"flex"} flexDirection="column" gap="24px">
+            <ColapsableSubPage
+              edit={true}
+              add={true}
+              title={"Insurance"}
+              expanded={true}
+            >
               <Box
                 pt={2}
                 pb={4}
@@ -92,7 +102,7 @@ function CustomersPage() {
                   ))}
               </Box>
             </ColapsableSubPage>
-            <ColapsableSubPage title={"AtFault"}>
+            <ColapsableSubPage edit={true} add={true} title={"AtFault"}>
               <Box
                 pt={2}
                 pb={4}
@@ -104,7 +114,7 @@ function CustomersPage() {
                 <Adress title="UNAMED" />
               </Box>
             </ColapsableSubPage>
-            <ColapsableSubPage title={"Employer"}>
+            <ColapsableSubPage edit={true} add={true} title={"Employer"}>
               <Box
                 pt={2}
                 pb={4}

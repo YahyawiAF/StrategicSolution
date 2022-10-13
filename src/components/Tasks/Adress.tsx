@@ -13,6 +13,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionActions from "@mui/material/AccordionActions";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AddIcon from "@mui/icons-material/Add";
 
 const Account = ({
   title,
@@ -34,11 +36,17 @@ const Account = ({
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          // sx={{ justifyContent: "space-between" }}
         >
-          <Typography variant="h6" color="text.secondary">
-            {title}
-          </Typography>
-          {/* <AccordionActions>ZZZ</AccordionActions> */}
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Typography variant="h6" color="text.secondary">
+              {title}
+            </Typography>
+            <AccordionActions>
+              <AddIcon />
+              <BorderColorIcon fontSize="small" />
+            </AccordionActions>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <Divider />

@@ -10,6 +10,7 @@ import { getAllPatientInsurance } from "~/repositories/patientInsurance.servise"
 import { ReactComponent as Close } from "~/assets/icons/close.svg";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface EditMenuProps {
   visible: boolean;
@@ -44,7 +45,13 @@ function TasksTag() {
 
   return (
     <Box p={1}>
-      <ColapsableSubPage title={"Patients"} expanded={false}>
+      <ColapsableSubPage
+        edit={true}
+        add={true}
+        icon={<ExpandMoreIcon />}
+        title={"Patients"}
+        expanded={false}
+      >
         <Box pt={2} pb={4} display={"flex"} flexDirection="column" gap="12px">
           {patients.length > 0 &&
             patients.map(patient => (

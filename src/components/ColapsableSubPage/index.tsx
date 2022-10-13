@@ -5,27 +5,40 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import AccordionActions from "@mui/material/AccordionActions";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AddIcon from "@mui/icons-material/Add";
 
 const ColapsableSubPage = ({
   title,
   children,
+  icon,
+  edit,
+  add,
   expanded,
 }: {
   title: string;
   children: ReactNode;
+  icon?: ReactNode;
+  edit: boolean;
+  add: boolean;
   expanded?: boolean;
 }): JSX.Element => {
   return (
     <StyledAccordion defaultExpanded={expanded}>
       <AccordionSummary
-        expandIcon={<CropFreeIcon />}
+        expandIcon={icon ? icon : <CropFreeIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5" color="text.secondary">
-          {title}
-        </Typography>
-        {/* <AccordionActions>ZZZ</AccordionActions> */}
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <Typography variant="h5" color="text.secondary">
+            {title}
+          </Typography>
+          <AccordionActions>
+            {add ? <AddIcon /> : null}
+            {edit ? <BorderColorIcon fontSize="small" /> : null}
+          </AccordionActions>
+        </Box>
       </AccordionSummary>
       <AccordionDetails>
         <Divider />

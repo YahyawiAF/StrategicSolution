@@ -76,7 +76,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
                 display={isEditMenuVisible ? "block" : "none"}
                 variant="h6"
               >
-                Tasks
+                TaskList
               </Typography>
               {isEditMenuVisible ? (
                 <MenuIcon
