@@ -7,6 +7,8 @@ import Adress from "./Adress";
 import { Box } from "@mui/material";
 import { useParams } from "react-router";
 import { getAllPatientInsurance } from "~/repositories/patientInsurance.servise";
+import NotesTable from "./Notes";
+import DocumentsTable from "./Documents";
 
 interface EditMenuProps {
   visible: boolean;
@@ -72,10 +74,10 @@ function CustomersPage() {
               <Account patient={patient} />
             </ColapsableSubPage>
             <ColapsableSubPage edit={true} add={true} title={"Notes"}>
-              <Adress title="UNAMED" />
+              <NotesTable title="UNAMED" />
             </ColapsableSubPage>
-            <ColapsableSubPage edit={true} add={true} title={"Documentes"}>
-              <Adress title="UNAMED" />
+            <ColapsableSubPage edit={true} add={true} title={"Documents"}>
+              <DocumentsTable title="UNAMED" />
             </ColapsableSubPage>
           </Box>
           <Box width="40%" display={"flex"} flexDirection="column" gap="24px">

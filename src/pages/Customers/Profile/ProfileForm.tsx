@@ -129,20 +129,6 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient }) => {
     formState: { isSubmitting },
   } = methods;
 
-  //   const resetAsyncForm = useCallback(
-  //     async (product: IDefaultValues) => {
-  //       reset(product);
-  //     },
-  //     [reset, product]
-  //   );
-
-  //   useEffect(() => {
-  //     if (product) {
-  //       resetAsyncForm(product as unknown as IDefaultValues);
-  //       reset(product);
-  //     }
-  //   }, [product]);
-
   const onSubmit = useCallback(async () => {
     console.log("data");
   }, [handleOpen, Modify, Create]);

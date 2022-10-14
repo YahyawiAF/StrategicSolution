@@ -136,6 +136,7 @@ const EditSideMenu = styled("div", {
   transition: width 0.5s;
       border-top: 1px solid #cecbcb;
     box-shadow: 5px 12px 9px rgb(0 0 0 / 10%);
+    overflow: auto;
   form {
     padding: 25px;
     div {

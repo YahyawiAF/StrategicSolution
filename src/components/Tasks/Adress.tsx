@@ -15,6 +15,7 @@ import AccordionActions from "@mui/material/AccordionActions";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router";
 
 const Account = ({
   title,
@@ -29,29 +30,26 @@ const Account = ({
     { title: "Contact Name", content: `${insurance?.contactname}` },
     { title: "Contact Phone", content: `${insurance?.contactphone}` },
   ];
+  const navigate = useNavigate();
   return (
     <>
-      <StyledAccordion>
+      <StyledAccordion expanded={false}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={null}
           aria-controls="panel1a-content"
           id="panel1a-header"
-          // sx={{ justifyContent: "space-between" }}
+          onClick={() =>
+            navigate(`/patient/${insurance?.id}?name=${insurance?.firstname}`)
+          }
         >
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <Typography variant="h6" color="text.secondary">
-              {title}
-            </Typography>
-            <AccordionActions>
-              <AddIcon />
-              <BorderColorIcon fontSize="small" />
-            </AccordionActions>
-          </Box>
+          <Typography variant="h6" color="text.secondary">
+            {title}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Divider />
           <Grid
-            sx={{ p: 2 }}
+            sx={{ p: 1 }}
             container
             spacing={2}
             // direction="row"
