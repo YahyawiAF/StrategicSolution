@@ -21,12 +21,6 @@ const Login: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      <Typography
-        variant="h3"
-        sx={{ position: "absolute", top: "0", left: "0", padding: "10px" }}
-      >
-        V.1.0.0.2
-      </Typography>
       <Box
         component="img"
         src="/static/image/topLogo.png"

@@ -14,6 +14,7 @@ import Page from "@components/Page";
 import { getAllPatient, Delete } from "~/repositories/patients.servise";
 import ADDForm from "./AddCustomers/AddForm";
 import { useParams } from "react-router-dom";
+import { If, Then, Else } from "react-if";
 import { Get } from "~/repositories/patients.servise";
 import { ReactComponent as Close } from "~/assets/icons/close.svg";
 import {
@@ -26,6 +27,7 @@ import {
   BoxTypeMap,
   Typography,
 } from "@mui/material";
+import SuspenseLoader from "~/components/SuspenseLoader";
 
 interface IDefaultValues {
   name: string;
@@ -138,18 +140,26 @@ function CustomersPage() {
   return (
     <>
       <Page>
-        <MainTable
-          tableRowColumns={TABLE_PATIENTS_STRUCTURE}
-          handleLimitChange={handleLimitChange}
-          handlePageChange={handlePageChange}
-          pagination={pagination}
-          onDeleteItem={onDeletePatient}
-          itemlist={customers}
-          basicRoute={"patient"}
-          sharedData={CUSTOMER_SHARED_DATA}
-          totalRows={totalRows}
-          onOpenMenu={handelEdit}
-        />
+        <If condition={customers.length === 0}>
+          <Then>
+            <SuspenseLoader />
+          </Then>
+          <Else>
+            <MainTable
+              tableRowColumns={TABLE_PATIENTS_STRUCTURE}
+              handleLimitChange={handleLimitChange}
+              handlePageChange={handlePageChange}
+              pagination={pagination}
+              onDeleteItem={onDeletePatient}
+              itemlist={customers}
+              basicRoute={"patient"}
+              sharedData={CUSTOMER_SHARED_DATA}
+              totalRows={totalRows}
+              onOpenMenu={handelEdit}
+            />
+          </Else>
+        </If>
+
         <EditSideMenu visible={isEditMenuVisible}>
           <Box p="25px" display="flex" justifyContent="space-between">
             <Typography variant="h6">

@@ -15,7 +15,7 @@ const slice = createSlice({
       return merge(state, action.payload);
     },
     logout: () => {
-      localStorage.clear();
+      sessionStorage.clear();
     },
     storeAuthData: (
       state,

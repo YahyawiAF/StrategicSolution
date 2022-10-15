@@ -17,7 +17,7 @@ export const loginService = (userName: string, password: string) => {
     })
     .then(response => {
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        sessionStorage.setItem("user", JSON.stringify(response.data));
       }
 
       return response.data;
@@ -25,11 +25,11 @@ export const loginService = (userName: string, password: string) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("user");
+  sessionStorage.removeItem("user");
 };
 
 // export const getCurrentUser = () => {
-//   const userStr = localStorage.getItem("user");
+//   const userStr = sessionStorage.getItem("user");
 //   if (userStr) return JSON.parse(userStr);
 
 //   return null;

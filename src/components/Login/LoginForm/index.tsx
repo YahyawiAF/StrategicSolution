@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import * as Yup from "yup";
-import React, { useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,7 +35,7 @@ export interface State extends SnackbarOrigin {
   open: boolean;
 }
 
-export default function LoginForm() {
+const LoginForm: FC = () => {
   const { login } = useAuth();
   const [state, setState] = React.useState<State>({
     open: false,
@@ -45,6 +45,7 @@ export default function LoginForm() {
   const { vertical, horizontal, open } = state;
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     userName: Yup.string().required("UserName is required"),
@@ -75,17 +76,37 @@ export default function LoginForm() {
     setState({ ...state, open: false });
   };
 
-  const onSubmit = async (data: { userName: string; password: string }) => {
-    loginService(data.userName, data.password).then(
-      async data => {
-        await login(data);
-      },
-      error => {
-        handleOpen();
-        console.log("error", error);
-      }
+  const onSubmit = useCallback(
+    async (data: { userName: string; password: string }) => {
+      setIsLoading(true);
+      loginService(data.userName, data.password).then(
+        async data => {
+          await login(data);
+        },
+        error => {
+          handleOpen();
+          console.log("error", error);
+        }
+      );
+      setIsLoading(false);
+    },
+    [setIsLoading]
+  );
+
+  const LoginButton = useMemo(() => {
+    return (
+      <LoadingButton
+        fullWidth
+        sx={{ borderRadius: 1, color: "#FFF" }}
+        size="large"
+        type="submit"
+        variant="contained"
+        loading={isLoading}
+      >
+        Sign in
+      </LoadingButton>
     );
-  };
+  }, [isLoading]);
 
   return (
     <>
@@ -141,18 +162,13 @@ export default function LoginForm() {
             Forgot password?
           </Link>
         </Stack>
-
-        <LoadingButton
-          fullWidth
-          sx={{ borderRadius: 1, color: "#FFF" }}
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Sign in
-        </LoadingButton>
+        {LoginButton}
+        <Typography textAlign="center" paddingTop="20px">
+          This virsion is 1.0.0.2 10/15/2022
+        </Typography>
       </FormProvider>
     </>
   );
-}
+};
+
+export default LoginForm;
