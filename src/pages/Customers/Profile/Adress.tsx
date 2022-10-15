@@ -41,10 +41,10 @@ const Account = ({
             <Typography variant="h6" color="text.secondary">
               {title}
             </Typography>
-            <AccordionActions>
+            {/* <AccordionActions>
               <AddIcon />
               <BorderColorIcon fontSize="small" />
-            </AccordionActions>
+            </AccordionActions> */}
           </Box>
         </AccordionSummary>
         <AccordionDetails>
@@ -98,7 +98,8 @@ const StyledAccordion = styled(Accordion)(
   () => `
     && {
       border-radius: 0;
-      box-shadow: 0px 6px 10px rgb(0 0 0 / 15%);
+      heigth: 35px;
+      background: #AFE5F9;
     }
 `
 );

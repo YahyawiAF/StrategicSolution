@@ -192,7 +192,7 @@ function CustomersPage() {
                     pb={4}
                     display="flex"
                     flexDirection="column"
-                    gap="12px"
+                    gap="5px"
                   >
                     {insurances.length > 0 &&
                       insurances.map(insurance => (

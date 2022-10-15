@@ -1,4 +1,11 @@
-import { createContext, useContext, useMemo, FC, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  FC,
+  ReactNode,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 
@@ -17,7 +24,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const login = async (data: any) => {
