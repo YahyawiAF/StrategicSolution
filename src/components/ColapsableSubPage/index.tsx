@@ -29,11 +29,15 @@ const ColapsableSubPage = ({
         expandIcon={icon ? icon : <CropFreeIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        sx={{ minHeight: "36px !important" }}
       >
-        <Box display="flex" justifyContent="space-between" width="100%">
-          <Typography variant="h5" color="text.secondary">
-            {title}
-          </Typography>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          alignItems="center"
+        >
+          <StyledHeader>{title}</StyledHeader>
           <AccordionActions>
             {add ? <AddIcon /> : null}
             {edit ? <BorderColorIcon fontSize="small" /> : null}
@@ -51,8 +55,24 @@ const ColapsableSubPage = ({
 const StyledAccordion = styled(Accordion)(
   () => `
     && {
-      border-radius: 5px;
+      border-radius: 0;
       box-shadow: 0px 6px 10px rgb(0 0 0 / 15%);
+      .MuiAccordionSummary-content {
+        margin: 0;
+
+      }
+    }
+`
+);
+
+const StyledHeader = styled(Typography)(
+  () => `
+    && {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #000000;
     }
 `
 );

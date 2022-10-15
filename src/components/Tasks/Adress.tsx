@@ -97,7 +97,7 @@ const StyledAccordion = styled(Accordion)(
   () => `
     && {
       border-radius: 0;
-      box-shadow: 0px 6px 10px rgb(0 0 0 / 15%);
+      background: rgb(0 0 0 / 10%);
     }
 `
 );

@@ -19,9 +19,7 @@ const Account: FC<AccountProps> = ({ patient }) => {
     <>
       <CardStyled>
         <Container lg={12} container spacing={2}>
-          <Grid item>
-            <ProfileForm patient={patient} />
-          </Grid>
+          <Grid item>{/* <ProfileForm patient={patient} /> */}</Grid>
         </Container>
       </CardStyled>
     </>

@@ -103,10 +103,6 @@ const DocumentsTable = ({
     return filtredNotes;
   }, [patientNotes, notes, id]);
 
-  // console.log("notes", notes);
-  // console.log("patientNotes", patientNotes);
-  // console.log("filtredData", filtredData);
-
   return (
     <>
       <Box sx={{ p: 2 }}>

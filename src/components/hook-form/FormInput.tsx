@@ -11,7 +11,7 @@ import {
 
 type FormInputProps = {
   name: string;
-  label: string;
+  label?: string;
 } & InputProps;
 
 const FormInput: FC<FormInputProps> = ({ name, label, ...other }) => {

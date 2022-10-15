@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ColapsableSubPage from "~/components/ColapsableSubPage";
 import { getAllPatient } from "~/repositories/patients.servise";
 import Adress from "./Adress";
-import { Box } from "@mui/material";
-import { useParams } from "react-router";
+import { Box, styled, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router";
 import { getAllPatientInsurance } from "~/repositories/patientInsurance.servise";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getAllPatientTasks } from "~/repositories/patientsTaskList.service";
@@ -14,7 +14,7 @@ function TasksTag() {
   const InsuranceService = useRef(getAllPatientInsurance);
   const PatientsService = useRef(getAllPatient);
   const PatientTasksService = useRef(getAllPatientTasks);
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const getAllPatients = useCallback(
@@ -82,10 +82,10 @@ function TasksTag() {
   );
 
   return (
-    <Box p={1}>
+    <Box p={1} display="flex" flexDirection="column" gap="5px">
       {filtredData.length > 0 &&
         filtredData.map((task, index) => (
-          <Box key={index} p={1}>
+          <StyledContaner key={index}>
             <ColapsableSubPage
               edit={true}
               add={true}
@@ -102,18 +102,45 @@ function TasksTag() {
               >
                 {patients.length > 0 &&
                   PatientList(task.id).map(patient => (
-                    <Adress
+                    <StyledList
                       key={patient.id}
-                      title={patient.firstname}
-                      insurance={patient}
-                    />
+                      onClick={() =>
+                        navigate(
+                          `/patient/${patient?.id}?name=${patient?.firstname}`
+                        )
+                      }
+                    >{`${patient.firstname} ${patient.lastname}`}</StyledList>
                   ))}
               </Box>
             </ColapsableSubPage>
-          </Box>
+          </StyledContaner>
         ))}
     </Box>
   );
 }
+
+const StyledContaner = styled(Box)(
+  () => `
+    && {
+      > div {
+        background: #F9F9F9;
+        box-shadow: none;
+      }
+    }
+`
+);
+
+const StyledList = styled(Box)(
+  () => `
+    && {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14px;
+      color: #000000;
+      cursor: pointer;
+    }
+`
+);
 
 export default TasksTag;

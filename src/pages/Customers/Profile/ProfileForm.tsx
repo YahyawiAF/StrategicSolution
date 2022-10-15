@@ -11,13 +11,18 @@ import {
   styled,
   Snackbar,
   Typography,
+  Card,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { SnackbarOrigin } from "@mui/material/Snackbar";
 
 import { MethodeType } from "~/types";
-import { FormProvider, RHFTextInputLabel } from "@components/hook-form";
+import {
+  FormInput,
+  FormProvider,
+  RHFTextInputLabel,
+} from "@components/hook-form";
 import { Create, Modify } from "~/repositories/product.service";
 
 export const DEFAULT_PROFILE_VALUES = {
@@ -42,6 +47,14 @@ export interface State extends SnackbarOrigin {
   open: boolean;
 }
 
+const StyledInput = styled(FormInput)(
+  ({ theme }) => `
+    && {
+      margin-top: 0 !important;
+    }
+`
+);
+
 const SaveButton = styled(LoadingButton)(
   ({ theme }) => `
     && {
@@ -54,9 +67,10 @@ const SaveButton = styled(LoadingButton)(
 
 interface PatientProfileProps {
   patient: any;
+  edit: boolean;
 }
 
-const ProfileForm: FC<PatientProfileProps> = ({ patient }) => {
+const ProfileForm: FC<PatientProfileProps> = ({ patient, edit }) => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: "top",
@@ -64,39 +78,63 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient }) => {
   });
 
   const FormInputProfileList = [
-    { title: "First Name", content: `${patient?.firstname}` },
-    { title: "Date Identifier", content: `${patient?.dateofbirth}` },
-    { title: "SSN", content: `${patient?.ssn}` },
-    { title: "Middle Name", content: `${patient?.middlename}` },
-    { title: "Adress 1", content: `${patient?.address1}` },
-    { title: "Patient Number", content: `${patient?.patientnumber}` },
-    { title: "Last Name", content: `${patient?.lastname}` },
-    { title: "Adress 2", content: `${patient?.address2}` },
-    { title: "Suffix #", content: `${patient?.suffix}` },
-    { title: "Deseased", content: "No" },
-    { title: "Servise Line", content: "VA" },
-    { title: "Episode", content: "82683029" },
-    { title: "DOB", content: `${patient?.dateofbirth}` },
-    { title: "Admit Date", content: `${patient?.createdUtc}` },
-    { title: "MRN", content: "283838992" },
-    { title: "SS #", content: "#####" },
-    { title: "Discharge", content: "29/12/2022" },
-    { title: "Status", content: "VA ID" },
-    { title: "Guaranto", content: "#####" },
-    { title: "Date Rec'd", content: "12/02/2023" },
-    { title: "Verified", content: "No" },
-    { title: "Date", content: "#####" },
-    { title: "Date Returne", content: "#####" },
-    { title: "Accedent Class", content: "Other" },
-    { title: "Location", content: `${patient?.state}` },
-    { title: "Return Code", content: "None" },
-    { title: "Total Charges", content: "526.22 $" },
-    { title: "City", content: `${patient?.city}` },
-    { title: "Injury Sustained", content: "#####" },
-    { title: "Current Balance", content: "356.22 $" },
-    { title: "Country", content: "#####" },
-    { title: "Patient Type", content: "Test" },
-    { title: "Accedent Info", content: "Link" },
+    {
+      title: "First Name",
+      content: `${patient?.firstname}`,
+      name: "firstname",
+    },
+    {
+      title: "Date Identifier",
+      content: `${patient?.dateofbirth}`,
+      name: "dateofbirth",
+    },
+    { title: "SSN", content: `${patient?.ssn}`, name: "ssn" },
+    {
+      title: "Middle Name",
+      content: `${patient?.middlename}`,
+      name: "middlename",
+    },
+    { title: "Adress 1", content: `${patient?.address1}`, name: "address1" },
+    {
+      title: "Patient Number",
+      content: `${patient?.patientnumber}`,
+      name: "patientnumber",
+    },
+    { title: "Last Name", content: `${patient?.lastname}`, name: "lastname" },
+    { title: "Adress 2", content: `${patient?.address2}`, name: "address2" },
+    { title: "Suffix #", content: `${patient?.suffix}`, name: "suffix" },
+    { title: "Deseased", content: "No", name: "" },
+    { title: "Servise Line", content: "VA", name: "" },
+  ];
+  const Column2 = [
+    { title: "Episode", content: "82683029", name: "" },
+    { title: "DOB", content: `${patient?.dateofbirth}`, name: "dateofbirth" },
+    {
+      title: "Admit Date",
+      content: `${patient?.createdUtc}`,
+      name: "dateofbirth",
+    },
+    { title: "MRN", content: "283838992", name: "" },
+    { title: "SS #", content: "#####", name: "" },
+    { title: "Discharge", content: "29/12/2022", name: "" },
+    { title: "Status", content: "VA ID", name: "" },
+    { title: "Guaranto", content: "#####", name: "" },
+    { title: "Date Rec'd", content: "12/02/2023", name: "" },
+    { title: "Verified", content: "No", name: "" },
+    { title: "Date", content: "#####", name: "" },
+  ];
+  const Column3 = [
+    { title: "Date Returne", content: "#####", name: "" },
+    { title: "Accedent Class", content: "Other", name: "" },
+    { title: "Location", content: `${patient?.state}`, name: "state" },
+    { title: "Return Code", content: "None", name: "" },
+    { title: "Total Charges", content: "526.22 $", name: "" },
+    { title: "City", content: `${patient?.city}`, name: "city" },
+    { title: "Injury Sustained", content: "#####", name: "" },
+    { title: "Current Balance", content: "356.22 $", name: "" },
+    { title: "Country", content: "#####", name: "" },
+    { title: "Patient Type", content: "Test", name: "" },
+    { title: "Accedent Info", content: "Link", name: "" },
   ];
 
   const { vertical, horizontal, open } = state;
@@ -127,7 +165,23 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient }) => {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = methods;
+
+  const resetAsyncForm = useCallback(
+    async (patient: any) => {
+      reset(patient);
+    },
+    [reset, patient]
+  );
+
+  useEffect(() => {
+    if (patient) {
+      resetAsyncForm(patient as unknown as any);
+    } else {
+      resetAsyncForm(DEFAULT_PROFILE_VALUES as unknown as any);
+    }
+  }, [patient]);
 
   const onSubmit = useCallback(async () => {
     console.log("data");
@@ -135,62 +189,138 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient }) => {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        key={vertical + horizontal}
-      >
-        <Alert severity="success">Saved!</Alert>
-      </Snackbar>
-      <FormProvider
-        methods={methods as unknown as MethodeType}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Grid
-          sx={{ p: 2, pb: 6 }}
-          container
-          spacing={2}
-          // direction="row"
-          justifyContent="space-between"
-          alignItems="self-start"
+      <CardStyled>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          key={vertical + horizontal}
         >
-          {FormInputProfileList.map((field, index) => (
-            <>
-              <Grid
-                columns={{ xs: 1, sm: 2, md: 3 }}
-                key={index}
-                sx={{ pb: 1 }}
-                item
-                display="flex"
-                justifyContent="flex-start"
-                alignItems="center"
-                width="15%"
-              >
-                <Box display="flex" gap="24px">
-                  <Typography variant="h6">{`${field.title}: `} </Typography>
+          <Alert severity="success">Saved!</Alert>
+        </Snackbar>
+        <FormProvider
+          methods={methods as unknown as MethodeType}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FormContainer>
+            <StyledHeader>Name</StyledHeader>
+            {FormInputProfileList.map((field, index) => (
+              <>
+                <Box display="flex" justifyContent="space-between">
+                  <StyledTitle>{`${field.title}: `} </StyledTitle>
+                  {edit ? (
+                    <StyledInput key={index} name={field.name} />
+                  ) : (
+                    <StyledTitle>{`${field.content}`} </StyledTitle>
+                  )}
                 </Box>
-              </Grid>
-              <Grid
-                columns={{ xs: 1, sm: 2, md: 3 }}
-                key={`${index} 2`}
-                sx={{ pb: 1 }}
-                item
-                display="flex"
-                justifyContent="flex-start"
-                alignItems="center"
-                width="15%"
-              >
-                <Box display="flex" gap="24px" key={index}>
-                  <Typography>{`${field.content}`} </Typography>
+              </>
+            ))}
+          </FormContainer>
+          <FormContainer>
+            <StyledHeader>Name</StyledHeader>
+            {Column2.map((field, index) => (
+              <>
+                <Box display="flex" justifyContent="space-between">
+                  <StyledTitle>{`${field.title}: `} </StyledTitle>
+                  {edit ? (
+                    <StyledInput key={index} name={field.name} />
+                  ) : (
+                    <StyledTitle>{`${field.content}`} </StyledTitle>
+                  )}
                 </Box>
-              </Grid>
-            </>
-          ))}
-        </Grid>
-      </FormProvider>
+              </>
+            ))}
+          </FormContainer>
+          <FormContainer>
+            <StyledHeader>Name</StyledHeader>
+            {Column3.map((field, index) => (
+              <>
+                <Box display="flex" justifyContent="space-between">
+                  <StyledTitle>{`${field.title}: `} </StyledTitle>
+                  {edit ? (
+                    <StyledInput key={index} name={field.name} />
+                  ) : (
+                    <StyledTitle>{`${field.content}`} </StyledTitle>
+                  )}
+                </Box>
+              </>
+            ))}
+          </FormContainer>
+
+          {edit ? (
+            <SaveButton
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Save
+            </SaveButton>
+          ) : (
+            <>{null}</>
+          )}
+        </FormProvider>
+      </CardStyled>
     </>
   );
 };
+
+const CardStyled = styled(Box)(
+  () => `
+      && {
+        height: 100%;
+        display: flex;
+        box-shadow: unset;
+        border-radius:0;
+        padding: 10px;
+
+        > form {
+          width: 100%;
+          display: flex;
+          gap: 10px;
+        }
+      }
+  `
+);
+
+const StyledHeader = styled(Box)(
+  () => `
+      && {
+        display: flex;
+        flex-direction: column;
+        background: #D5D8EF;
+        padding: 10px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        margin-bottom: 10px;
+      }
+  `
+);
+
+const FormContainer = styled(Box)(
+  () => `
+      && {
+        display: flex;
+        flex-direction: column;
+        width: 33%
+      }
+  `
+);
+
+const StyledTitle = styled(Typography)(
+  () => `
+      && {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+
+        color: #000000;
+      }
+  `
+);
 
 export default ProfileForm;

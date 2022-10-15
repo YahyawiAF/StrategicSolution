@@ -160,9 +160,6 @@ const companyForm: FC<IPropscompanyForm> = ({ patient, id, onOpenMenu }) => {
     [patient, handleOpen]
   );
 
-  console.log("patient", patient);
-  console.log("state", methods.formState.errors);
-
   return (
     <>
       <Snackbar
