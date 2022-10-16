@@ -16,6 +16,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddIcon from "@mui/icons-material/Add";
 
+import { ReactComponent as TickIcon } from "~/assets/icons/tick.svg";
+import { ReactComponent as EditIcon } from "~/assets/icons/edit.svg";
+
 const Account = ({
   title,
   insurance,
@@ -38,13 +41,20 @@ const Account = ({
           id="panel1a-header"
         >
           <Box display="flex" justifyContent="space-between" width="100%">
-            <Typography variant="h6" color="text.secondary">
-              {title}
-            </Typography>
-            {/* <AccordionActions>
-              <AddIcon />
-              <BorderColorIcon fontSize="small" />
-            </AccordionActions> */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap="5px"
+            >
+              <TickIcon />
+              <StyledTitle>{title}</StyledTitle>
+            </Box>
+
+            <AccordionActions>
+              {/* <AddIcon /> */}
+              <EditIcon />
+            </AccordionActions>
           </Box>
         </AccordionSummary>
         <AccordionDetails>
@@ -69,7 +79,9 @@ const Account = ({
                   width="50%"
                 >
                   <Box display="flex" gap="24px">
-                    <Typography variant="h6">{`${field.title}: `} </Typography>
+                    <StyledTitle fontWeight="600">
+                      {`${field.title}: `}{" "}
+                    </StyledTitle>
                   </Box>
                 </Grid>
                 <Grid
@@ -82,7 +94,7 @@ const Account = ({
                   width="50%"
                 >
                   <Box display="flex" gap="24px" key={index}>
-                    <Typography>{`${field.content}`} </Typography>
+                    <StyledTitle>{`${field.content}`} </StyledTitle>
                   </Box>
                 </Grid>
               </>
@@ -98,8 +110,25 @@ const StyledAccordion = styled(Accordion)(
   () => `
     && {
       border-radius: 0;
-      heigth: 35px;
       background: #AFE5F9;
+      > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 35px;
+        padding: 0px 5px;
+      }
+    }
+`
+);
+
+const StyledTitle = styled(Typography)(
+  () => `
+    && {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 10.1818px;
+      line-height: 12px;
     }
 `
 );

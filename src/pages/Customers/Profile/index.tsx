@@ -87,7 +87,7 @@ function CustomersPage() {
   return (
     <>
       <Page>
-        <Box display="flex" gap="10px">
+        <Box width="100%" display="flex" gap="10px">
           <EditSideMenu visible={isEditMenuVisible}>
             <Box
               p="5px"
@@ -110,7 +110,7 @@ function CustomersPage() {
             <Divider />
             {isEditMenuVisible ? <TasksTag /> : null}
           </EditSideMenu>
-          <Box display="flex" flexDirection="column" gap="10px">
+          <Box width="100%" display="flex" flexDirection="column" gap="10px">
             <Box display="flex" height="100px" sx={{ background: "#FFF" }}>
               <IconBox>
                 <Plus />
@@ -152,17 +152,17 @@ function CustomersPage() {
                 gap="1px"
               >
                 <Box display="flex" justifyContent="center" gap="10px">
-                  <BalanceBox title="gg" balance="777" />
-                  <BalanceBox title="gg" balance="777" />
+                  <BalanceBox title="Acct Balance" balance="7,645.00" />
+                  <BalanceBox title="Group Balance" balance="7,645.00" />
                 </Box>
                 <Box display="flex" justifyContent="center" gap="10px">
-                  <BalanceBox title="gg" balance="777" />
-                  <BalanceBox title="gg" balance="777" />
+                  <BalanceBox title="Acct Charges" balance="7,645.00" />
+                  <BalanceBox title="Group Charges" balance="7,645.00" />
                 </Box>
               </Box>
             </Box>
             <Box display="flex" gap="10px">
-              <Box width="60%" display="flex" flexDirection="column" gap="10px">
+              <Box width="80%" display="flex" flexDirection="column" gap="10px">
                 <ColapsableSubPage
                   edit={true}
                   add={false}
@@ -180,7 +180,7 @@ function CustomersPage() {
                   <DocumentsTable title="UNAMED" />
                 </ColapsableSubPage>
               </Box>
-              <Box width="40%" display="flex" flexDirection="column" gap="10px">
+              <Box width="20%" display="flex" flexDirection="column" gap="10px">
                 <ColapsableSubPage
                   edit={true}
                   add={true}
@@ -310,10 +310,9 @@ const StyledTitle = styled(Typography)(
     && {
       font-style: normal;
       font-weight: 400;
-      font-size: 12px;
-      line-height: 14px;
+      font-size: 10px;
+      line-height: 10px;
 
-      color: #AAADBA;
     }
 `
 );
@@ -323,8 +322,8 @@ const StyledBalnce = styled(Typography)(
     && {
       font-style: normal;
       font-weight: 700;
-      font-size: 14px;
-      line-height: 16px;
+      font-size: 12px;
+      line-height: 12px;
 
       color: #000000;
     }

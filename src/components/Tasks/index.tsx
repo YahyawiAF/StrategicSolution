@@ -2,11 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ColapsableSubPage from "~/components/ColapsableSubPage";
 import { getAllPatient } from "~/repositories/patients.servise";
 import Adress from "./Adress";
-import { Box, styled, Typography } from "@mui/material";
+import { Box, CircularProgress, styled, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
 import { getAllPatientInsurance } from "~/repositories/patientInsurance.servise";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getAllPatientTasks } from "~/repositories/patientsTaskList.service";
+import { Else, If, Then } from "react-if";
+import SuspenseLoader from "../SuspenseLoader";
 
 function TasksTag() {
   const [patients, setPatients] = useState<any[]>([]);
@@ -83,38 +85,47 @@ function TasksTag() {
 
   return (
     <Box p={1} display="flex" flexDirection="column" gap="5px">
-      {filtredData.length > 0 &&
-        filtredData.map((task, index) => (
-          <StyledContaner key={index}>
-            <ColapsableSubPage
-              edit={true}
-              add={true}
-              icon={<ExpandMoreIcon />}
-              title={task.task}
-              expanded={false}
-            >
-              <Box
-                pt={1}
-                pb={4}
-                display="flex"
-                flexDirection="column"
-                gap="12px"
-              >
-                {patients.length > 0 &&
-                  PatientList(task.id).map(patient => (
-                    <StyledList
-                      key={patient.id}
-                      onClick={() =>
-                        navigate(
-                          `/patient/${patient?.id}?name=${patient?.firstname}`
-                        )
-                      }
-                    >{`${patient.firstname} ${patient.lastname}`}</StyledList>
-                  ))}
-              </Box>
-            </ColapsableSubPage>
-          </StyledContaner>
-        ))}
+      <If condition={filtredData.length > 0}>
+        <Then>
+          {filtredData.length > 0 &&
+            filtredData.map((task, index) => (
+              <StyledContaner key={index}>
+                <ColapsableSubPage
+                  edit={true}
+                  add={true}
+                  icon={<ExpandMoreIcon />}
+                  title={task.task}
+                  expanded={false}
+                >
+                  <Box
+                    pt={1}
+                    pb={4}
+                    display="flex"
+                    flexDirection="column"
+                    gap="12px"
+                  >
+                    {patients.length > 0 &&
+                      PatientList(task.id).map(patient => (
+                        <StyledList
+                          key={patient.id}
+                          onClick={() =>
+                            navigate(
+                              `/patient/${patient?.id}?name=${patient?.firstname}`
+                            )
+                          }
+                        >{`${patient.firstname} ${patient.lastname}`}</StyledList>
+                      ))}
+                  </Box>
+                </ColapsableSubPage>
+              </StyledContaner>
+            ))}
+        </Then>
+        <Else>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <CircularProgress size={64} disableShrink thickness={3} />
+          </Box>
+        </Else>
+      </If>
     </Box>
   );
 }

@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
+import { If, Then, Else } from "react-if";
 import Iconify from "@components/Iconify";
 import { FormProvider, RHFTextField, RHFCheckbox } from "@components/hook-form";
 import { MethodeType } from "~/types";
@@ -23,6 +23,7 @@ import { loginService } from "~/repositories/auth.service";
 
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { SnackbarOrigin } from "@mui/material/Snackbar";
+import SuspenseLoader from "~/components/SuspenseLoader";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -95,16 +96,23 @@ const LoginForm: FC = () => {
 
   const LoginButton = useMemo(() => {
     return (
-      <LoadingButton
-        fullWidth
-        sx={{ borderRadius: 1, color: "#FFF" }}
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isLoading}
-      >
-        Sign in
-      </LoadingButton>
+      <If condition={isSubmitting}>
+        <Then>
+          <SuspenseLoader />
+        </Then>
+        <Else>
+          <LoadingButton
+            fullWidth
+            sx={{ borderRadius: 1, color: "#FFF" }}
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isLoading}
+          >
+            Sign in
+          </LoadingButton>
+        </Else>
+      </If>
     );
   }, [isLoading]);
 

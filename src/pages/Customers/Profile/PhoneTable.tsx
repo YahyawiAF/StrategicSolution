@@ -40,13 +40,14 @@ const PhoneTable = (): JSX.Element => {
         </Box>
         <Box display="flex" width="100%">
           <Column header={<AddIcon />} content={<PhoneIcon />} />
-          <Column header="Phone" content="Data" />
+          <Column header="Phone Number" content="Data" />
           <Column header="Type" content="Data" />
-          <Column header="Seen" content="Data" />
-          <Column header="Date" content="Data" />
+          <Column header="Last Seen" content="Data" />
+          <Column header="Validate Date" content="Data" />
           <Column header="Carrier" content="Data" />
           <Column header="Status" content="Data" />
-          <Column header="Status" content="Data" />
+          <Column header="In Cell" content="Data" />
+          <Column header="Actions" content="Data" />
         </Box>
       </Container>
     </>
@@ -70,7 +71,6 @@ const StyledHeader = styled(Box)(
           && {
             border-right: 1px solid #FFF;
             padding: 8px;
-            padding-right: 30px;
             background: #D5D8EF;
             display: flex;
           }

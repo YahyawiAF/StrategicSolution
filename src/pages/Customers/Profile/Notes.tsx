@@ -125,18 +125,31 @@ const NotesTable = ({
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            height="80px"
-            borderBottom="1px solid #000"
+            height="52px"
+            border="1px solid #000"
+            gap="5px"
+            mt="5px"
           >
-            <Typography fontWeight="600">{field?.note}</Typography>
-            <Typography>{field?.createdUtc}</Typography>
-            <Typography>{field?.title}</Typography>
-            <Typography fontWeight="600">{field?.createdBy}</Typography>
+            <Text fontWeight="600">{field?.note}</Text>
+            <Text>{field?.createdUtc}</Text>
+            <Text>{field?.title}</Text>
+            <Text fontWeight="600">{field?.createdBy}</Text>
           </Box>
         ))}
       </Grid>
     </>
   );
 };
+
+const Text = styled(Typography)(
+  () => `
+        && {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 14px;
+        }
+    `
+);
 
 export default NotesTable;
