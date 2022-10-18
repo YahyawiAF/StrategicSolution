@@ -38,7 +38,7 @@ const Login: React.FC = () => {
         </Typography>
         <LoginForm />
       </ContentStyle>
-      <Stack
+      {/* <Stack
         direction="row"
         alignItems="center"
         justifyContent="center"
@@ -50,13 +50,14 @@ const Login: React.FC = () => {
         <Link variant="subtitle2" underline="hover">
           Sign up
         </Link>
-      </Stack>
+      </Stack> */}
     </Box>
   );
 };
 
 const ContentStyle = styled("div")(({ theme }) => ({
   // maxWidth: 480,
+  marginBottom: "24px",
   maxWidth: 509,
   width: 509,
   display: "flex",
