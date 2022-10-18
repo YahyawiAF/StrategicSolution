@@ -19,22 +19,24 @@ import DocumentsTable from "./Documents";
 import ProfileForm from "./ProfileForm";
 import TasksTag from "~/components/Tasks";
 import MenuIcon from "@mui/icons-material/Menu";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { If, Then, Else } from "react-if";
 
 import { ReactComponent as Plus } from "~/assets/icons/plus.svg";
 import { ReactComponent as Clock } from "~/assets/icons/clock.svg";
 import { ReactComponent as Bolt } from "~/assets/icons/bolt.svg";
-import { ReactComponent as Connect } from "~/assets/icons/connect.svg";
 import PhoneTable from "./PhoneTable";
 import InsuranceForm from "./Forms/InsuranceForm";
 import NoteForm from "./Forms/NotesForm";
 import { getAllPatientNotes } from "~/repositories/patientsNotes.service";
 import { getAllNotes } from "~/repositories/notes.service";
+import SuspenseLoader from "~/components/SuspenseLoader";
+import DocumentForm from "./Forms/DocumentsForm";
 
 enum TaskListForm {
   TaskList = "taskList",
   InsuranceForm = "insuranceForm",
   NoteForm = "noteForm",
+  DocumentForm = "documentForm",
 }
 
 interface EditMenuProps {
@@ -170,6 +172,11 @@ function CustomersPage() {
     setIsEditMenuVisible(true);
   }, [TaskListForm, setIsEditMenuVisible]);
 
+  const handleEditDocuments = useCallback(() => {
+    setSideMenu(TaskListForm.DocumentForm);
+    setIsEditMenuVisible(true);
+  }, [TaskListForm, setIsEditMenuVisible]);
+
   const handleCloseEdit = useCallback(() => {
     setSideMenu(TaskListForm.TaskList);
   }, [TaskListForm]);
@@ -193,6 +200,17 @@ function CustomersPage() {
       case TaskListForm.NoteForm:
         return (
           <NoteForm
+            id={editInsurances?.id}
+            insurance={editInsurances}
+            pagination={{ page: 0, limit: 50 }}
+            onFetchData={getNotes}
+            onClose={handleCloseEdit}
+          />
+        );
+        break;
+      case TaskListForm.DocumentForm:
+        return (
+          <DocumentForm
             id={editInsurances?.id}
             insurance={editInsurances}
             pagination={{ page: 0, limit: 50 }}
@@ -314,9 +332,22 @@ function CustomersPage() {
                   title={"Notes"}
                   onAddClick={handleEditNotes}
                 >
-                  <NotesTable patientNotes={patientNotes} notes={notes} />
+                  <If condition={patientNotes.length > 0 && notes.length > 0}>
+                    <Then>
+                      <NotesTable patientNotes={patientNotes} notes={notes} />
+                    </Then>
+                    <Else>
+                      <SuspenseLoader />
+                    </Else>
+                  </If>
                 </ColapsableSubPage>
-                <ColapsableSubPage edit={true} add={true} title={"Documents"}>
+                <ColapsableSubPage
+                  expanded={false}
+                  edit={false}
+                  add={true}
+                  title={"Documents"}
+                  onAddClick={handleEditDocuments}
+                >
                   <DocumentsTable title="UNAMED" />
                 </ColapsableSubPage>
               </Box>
@@ -335,15 +366,21 @@ function CustomersPage() {
                     flexDirection="column"
                     gap="5px"
                   >
-                    {insurances.length > 0 &&
-                      insurances.map(insurance => (
-                        <Adress
-                          key={insurance.id}
-                          title={insurance.insurancename}
-                          insurance={insurance}
-                          onSelectInsurance={handleEditInsurance}
-                        />
-                      ))}
+                    <If condition={insurances.length > 0}>
+                      <Then>
+                        {insurances.map(insurance => (
+                          <Adress
+                            key={insurance.id}
+                            title={insurance.insurancename}
+                            insurance={insurance}
+                            onSelectInsurance={handleEditInsurance}
+                          />
+                        ))}
+                      </Then>
+                      <Else>
+                        <SuspenseLoader />
+                      </Else>
+                    </If>
                   </Box>
                 </ColapsableSubPage>
                 <ColapsableSubPage edit={true} add={true} title={"AtFault"}>

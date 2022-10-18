@@ -25,6 +25,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.26",
     "@types/yup": "^0.32.0",
+    "react-dropzone": "14.2.1",
     "axios": "^0.27.2",
     "date-fns": "^2.29.3",
     "nprogress": "^0.2.0",

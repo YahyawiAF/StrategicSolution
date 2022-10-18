@@ -8,14 +8,10 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import {
-  getAllPatientNotes,
-  Create,
-} from "~/repositories/patientsNotes.service";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { getAllNotes } from "~/repositories/notes.service";
 import { useParams } from "react-router";
+import { getAllPatientDocuments } from "~/repositories/patientDocument.service";
 
 const DocumentsTable = ({
   title,
@@ -24,94 +20,52 @@ const DocumentsTable = ({
   title: string;
   insurance?: any;
 }): JSX.Element => {
-  const [notes, setNotes] = useState<any[]>([]);
-  const [patientNotes, setPatientNotes] = useState<any[]>([]);
+  const [patientDocuments, setPatientDocuments] = useState<any[]>([]);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
 
-  const PatientNotesService = useRef(getAllPatientNotes);
-  const NotesService = useRef(getAllNotes);
+  const PatientDocumentService = useRef(getAllPatientDocuments);
 
   const { id } = useParams();
 
-  const getPatientNotes = useCallback(
+  const getPatientDocuments = useCallback(
     async (pagination: any) => {
-      await PatientNotesService.current(pagination).then(
+      await PatientDocumentService.current(pagination).then(
         (response: any) => {
-          setPatientNotes(response.data.data);
+          setPatientDocuments(response.data.data);
         },
         (error: any) => {
           console.log(error);
         }
       );
     },
-    [PatientNotesService]
+    [PatientDocumentService, setPatientDocuments]
   );
-
-  const getNotes = useCallback(
-    async (pagination: any) => {
-      await NotesService.current(pagination).then(
-        (response: any) => {
-          setNotes(response.data.data);
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    },
-    [NotesService]
-  );
-
-  // const CreatePatientNotes = useCallback(async () => {
-  //   await Create({
-  //     patientid: id,
-  //     noteid: 1,
-  //   }).then(
-  //     (response: any) => {
-  //       setNotes(response.data.data);
-  //     },
-  //     (error: any) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }, [NotesService]);
-
-  // useEffect(() => {
-  //   CreatePatientNotes();
-  // }, [CreatePatientNotes]);
 
   useEffect(() => {
-    getPatientNotes({
+    getPatientDocuments({
       page: 0,
       limit: 50,
     });
-  }, [getPatientNotes]);
+  }, [getPatientDocuments]);
 
-  useEffect(() => {
-    getNotes({
-      page: 0,
-      limit: 50,
-    });
-  }, [getPatientNotes]);
+  console.log("patientDocuments", patientDocuments);
 
   const filtredData = useMemo(() => {
-    const filtredPatientNotes = patientNotes?.filter(
+    const filtredPatientDocuments = patientDocuments?.filter(
       item => item.patientid == id
     );
-    const NoteIds = filtredPatientNotes.map(item => item.noteid);
-    const filtredNotes = notes.filter(notes =>
-      NoteIds.some(filter => notes.id == filter)
-    );
-    return filtredNotes;
-  }, [patientNotes, notes, id]);
+    return filtredPatientDocuments;
+  }, [patientDocuments, id]);
 
   return (
     <>
       <Box sx={{ p: 2 }}>
-        {filtredData.map((item, index) => {
+        {patientDocuments?.map((item, index) => {
           const InsuranceForm = [
-            { title: "Type", content: `${item?.address}` },
-            { title: "Create Date", content: `${insurance?.phone}` },
-            { title: "Description", content: `${insurance?.contactname}` },
-            { title: "Amount", content: `${insurance?.contactphone}` },
+            { title: "Type", content: `${item?.documenttype}` },
+            { title: "Create Date", content: `${item?.createdUtc}` },
+            { title: "Description", content: `${item?.documentname}` },
+            { title: "Amount", content: `${item?.contactphone}` },
           ];
           return (
             <Box
@@ -129,7 +83,7 @@ const DocumentsTable = ({
                   <Box key={index} display="flex" gap="8px">
                     <Typography fontSize="12px">{field?.title}</Typography>
                     <Typography fontSize="12px" fontWeight="600">
-                      {item?.content}
+                      {field?.content}
                     </Typography>
                   </Box>
                 ))}
