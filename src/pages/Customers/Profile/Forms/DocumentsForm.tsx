@@ -81,19 +81,19 @@ const DocumentForm: FC<any> = ({ notes, pagination, onClose, onFetchData }) => {
     // setIsLoading(true);
     // setFileNames(acceptedFiles[0].name);
     console.log("acceptedFiles", acceptedFiles[0]);
+    const file = acceptedFiles[0];
 
-    const formData = new FormData();
-    formData.set("file", acceptedFiles[0].name);
-    formData.set("type", acceptedFiles[0].type);
+    // const formData = new FormData();
+    // formData.set("file", acceptedFiles[0].name);
+    // formData.set("type", acceptedFiles[0].type);
 
-    console.log("formData", formData.get("file"));
+    // console.log("formData", formData.get("file"));
 
     await Create({
       documenttype: acceptedFiles[0].type,
       patientid: id,
       documentname: acceptedFiles[0].name,
-      Attachment: formData.get("file"),
-      type: formData.get("type"),
+      Attachment: file,
     }).then(
       async () => {
         onFetchData(pagination);
