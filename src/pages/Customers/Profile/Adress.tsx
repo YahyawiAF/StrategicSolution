@@ -18,14 +18,18 @@ import AddIcon from "@mui/icons-material/Add";
 
 import { ReactComponent as TickIcon } from "~/assets/icons/tick.svg";
 import { ReactComponent as EditIcon } from "~/assets/icons/edit.svg";
+import { useState } from "react";
 
 const Account = ({
   title,
   insurance,
+  onSelectInsurance,
 }: {
   title: string;
   insurance?: any;
+  onSelectInsurance: (insurance: any) => void;
 }): JSX.Element => {
+  const [expanded, setExpanded] = useState<boolean>(false);
   const InsuranceForm = [
     { title: "Adress", content: `${insurance?.address}` },
     { title: "Phone Number", content: `${insurance?.phone}` },
@@ -34,11 +38,12 @@ const Account = ({
   ];
   return (
     <>
-      <StyledAccordion>
+      <StyledAccordion expanded={expanded}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon onClick={() => setExpanded(!expanded)} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          onClick={e => e.stopPropagation()}
         >
           <Box display="flex" justifyContent="space-between" width="100%">
             <Box
@@ -52,8 +57,7 @@ const Account = ({
             </Box>
 
             <AccordionActions>
-              {/* <AddIcon /> */}
-              <EditIcon />
+              <EditIcon onClick={() => onSelectInsurance(insurance)} />
             </AccordionActions>
           </Box>
         </AccordionSummary>

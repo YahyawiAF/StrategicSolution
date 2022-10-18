@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react";
+import { ReactNode, memo, useState } from "react";
 import { styled, Typography, Box, Card, Divider } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -15,6 +15,8 @@ const ColapsableSubPage = ({
   edit,
   add,
   expanded,
+  onClickEdit,
+  onAddClick,
 }: {
   title: string;
   children: ReactNode;
@@ -22,14 +24,24 @@ const ColapsableSubPage = ({
   edit: boolean;
   add: boolean;
   expanded?: boolean;
+  onClickEdit?: () => void;
+  onAddClick?: () => void;
 }): JSX.Element => {
+  const [isExpanded, setisExpanded] = useState<boolean | undefined>(expanded);
   return (
-    <StyledAccordion defaultExpanded={expanded}>
+    <StyledAccordion expanded={isExpanded}>
       <AccordionSummary
-        expandIcon={icon ? icon : <CropFreeIcon />}
+        expandIcon={
+          icon ? (
+            icon
+          ) : (
+            <CropFreeIcon onClick={() => setisExpanded(!isExpanded)} />
+          )
+        }
         aria-controls="panel1a-content"
         id="panel1a-header"
         sx={{ minHeight: "36px !important" }}
+        onClick={e => e.stopPropagation()}
       >
         <Box
           display="flex"
@@ -39,8 +51,10 @@ const ColapsableSubPage = ({
         >
           <StyledHeader>{title}</StyledHeader>
           <AccordionActions>
-            {add ? <AddIcon /> : null}
-            {edit ? <BorderColorIcon fontSize="small" /> : null}
+            {add ? <AddIcon onClick={onAddClick} /> : null}
+            {edit ? (
+              <BorderColorIcon onClick={onClickEdit} fontSize="small" />
+            ) : null}
           </AccordionActions>
         </Box>
       </AccordionSummary>

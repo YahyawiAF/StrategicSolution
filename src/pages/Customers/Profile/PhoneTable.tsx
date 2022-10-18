@@ -28,7 +28,7 @@ const Column = ({
   );
 };
 
-const PhoneTable = (): JSX.Element => {
+const PhoneTable = ({ patient }: { patient: any }): JSX.Element => {
   return (
     <>
       <Container>
@@ -40,7 +40,7 @@ const PhoneTable = (): JSX.Element => {
         </Box>
         <Box display="flex" width="100%">
           <Column header={<AddIcon />} content={<PhoneIcon />} />
-          <Column header="Phone Number" content="Data" />
+          <Column header="Phone Number" content={`${patient?.patientnumber}`} />
           <Column header="Type" content="Data" />
           <Column header="Last Seen" content="Data" />
           <Column header="Validate Date" content="Data" />

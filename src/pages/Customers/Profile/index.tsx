@@ -1,4 +1,12 @@
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Page from "@components/Page";
 import ColapsableSubPage from "~/components/ColapsableSubPage";
 import { Get } from "~/repositories/patients.servise";
@@ -18,6 +26,16 @@ import { ReactComponent as Clock } from "~/assets/icons/clock.svg";
 import { ReactComponent as Bolt } from "~/assets/icons/bolt.svg";
 import { ReactComponent as Connect } from "~/assets/icons/connect.svg";
 import PhoneTable from "./PhoneTable";
+import InsuranceForm from "./Forms/InsuranceForm";
+import NoteForm from "./Forms/NotesForm";
+import { getAllPatientNotes } from "~/repositories/patientsNotes.service";
+import { getAllNotes } from "~/repositories/notes.service";
+
+enum TaskListForm {
+  TaskList = "taskList",
+  InsuranceForm = "insuranceForm",
+  NoteForm = "noteForm",
+}
 
 interface EditMenuProps {
   visible: boolean;
@@ -39,13 +57,63 @@ const BalanceBox: FC<BalanceBoxProps> = ({ title, balance }) => {
 
 function CustomersPage() {
   const [patient, setPatient] = useState();
+  const [sideMenu, setSideMenu] = useState<TaskListForm>(TaskListForm.TaskList);
   const [isEditMenuVisible, setIsEditMenuVisible] = useState<boolean>(false);
   const [insurances, setInsurances] = useState<any[]>([]);
+  const [editInsurances, setEditInsurance] = useState<any>([]);
+  const [isEditPatient, setIsEditPatient] = useState<boolean>(false);
   const InsuranceService = useRef(getAllPatientInsurance);
   const PatientsService = useRef(Get);
   const { id } = useParams();
+  const [notes, setNotes] = useState<any[]>([]);
+  const [patientNotes, setPatientNotes] = useState<any[]>([]);
 
-  const getCompany = useCallback(
+  const PatientNotesService = useRef(getAllPatientNotes);
+  const NotesService = useRef(getAllNotes);
+
+  const getPatientNotes = useCallback(
+    async (pagination: any) => {
+      await PatientNotesService.current(pagination).then(
+        (response: any) => {
+          setPatientNotes(response.data.data);
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    },
+    [PatientNotesService]
+  );
+
+  const getNotes = useCallback(
+    async (pagination: any) => {
+      await NotesService.current(pagination).then(
+        (response: any) => {
+          setNotes(response.data.data);
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    },
+    [NotesService]
+  );
+
+  useEffect(() => {
+    getPatientNotes({
+      page: 0,
+      limit: 50,
+    });
+  }, [getPatientNotes]);
+
+  useEffect(() => {
+    getNotes({
+      page: 0,
+      limit: 50,
+    });
+  }, [getPatientNotes]);
+
+  const getPatients = useCallback(
     async (id: string) => {
       await PatientsService.current(id).then(
         (response: any) => {
@@ -74,8 +142,8 @@ function CustomersPage() {
   );
 
   useEffect(() => {
-    id && getCompany(id);
-  }, [id, getCompany]);
+    id && getPatients(id);
+  }, [id, getPatients]);
 
   useEffect(() => {
     getAllInsurances({
@@ -83,6 +151,62 @@ function CustomersPage() {
       limit: 50,
     });
   }, [getAllInsurances]);
+
+  const handleEditPatient = useCallback(() => {
+    setIsEditPatient(!isEditPatient);
+  }, [isEditPatient]);
+
+  const handleEditInsurance = useCallback(
+    (insurance?: any) => {
+      insurance ? setEditInsurance(insurance) : setEditInsurance(undefined);
+      setSideMenu(TaskListForm.InsuranceForm);
+      setIsEditMenuVisible(true);
+    },
+    [TaskListForm, setIsEditMenuVisible, setEditInsurance]
+  );
+
+  const handleEditNotes = useCallback(() => {
+    setSideMenu(TaskListForm.NoteForm);
+    setIsEditMenuVisible(true);
+  }, [TaskListForm, setIsEditMenuVisible]);
+
+  const handleCloseEdit = useCallback(() => {
+    setSideMenu(TaskListForm.TaskList);
+  }, [TaskListForm]);
+
+  const GetTaskList = useMemo(() => {
+    switch (sideMenu) {
+      case TaskListForm.TaskList:
+        return <TasksTag />;
+        break;
+      case TaskListForm.InsuranceForm:
+        return (
+          <InsuranceForm
+            id={editInsurances?.id}
+            insurance={editInsurances}
+            pagination={{ page: 0, limit: 50 }}
+            onFetchData={getAllInsurances}
+            onClose={handleCloseEdit}
+          />
+        );
+        break;
+      case TaskListForm.NoteForm:
+        return (
+          <NoteForm
+            id={editInsurances?.id}
+            insurance={editInsurances}
+            pagination={{ page: 0, limit: 50 }}
+            onFetchData={getNotes}
+            onClose={handleCloseEdit}
+          />
+        );
+        break;
+      default:
+        return <TasksTag />;
+    }
+  }, [sideMenu, TaskListForm, editInsurances, getAllInsurances]);
+
+  console.log("isEditPatient", isEditPatient);
 
   return (
     <>
@@ -100,15 +224,20 @@ function CustomersPage() {
               <Typography
                 display={isEditMenuVisible ? "block" : "none"}
                 variant="h4"
+                onClick={() => setSideMenu(TaskListForm.TaskList)}
+                sx={{ cursor: "pointer" }}
               >
                 TaskList
               </Typography>
               <MenuIcon
-                onClick={() => setIsEditMenuVisible(!isEditMenuVisible)}
+                onClick={() => {
+                  setIsEditMenuVisible(!isEditMenuVisible);
+                  setSideMenu(TaskListForm.TaskList);
+                }}
               />
             </Box>
             <Divider />
-            {isEditMenuVisible ? <TasksTag /> : null}
+            {isEditMenuVisible ? GetTaskList : null}
           </EditSideMenu>
           <Box width="100%" display="flex" flexDirection="column" gap="10px">
             <Box display="flex" height="100px" sx={{ background: "#FFF" }}>
@@ -168,13 +297,24 @@ function CustomersPage() {
                   add={false}
                   title={"Patient Details"}
                   expanded={true}
+                  onClickEdit={handleEditPatient}
                 >
-                  <ProfileForm edit={false} patient={patient} />
-                  <PhoneTable />
+                  <ProfileForm
+                    onFetchData={getPatients}
+                    edit={isEditPatient}
+                    patient={patient}
+                  />
+                  <PhoneTable patient={patient} />
                 </ColapsableSubPage>
 
-                <ColapsableSubPage edit={true} add={true} title={"Notes"}>
-                  <NotesTable title="UNAMED" />
+                <ColapsableSubPage
+                  expanded={false}
+                  edit={false}
+                  add={true}
+                  title={"Notes"}
+                  onAddClick={handleEditNotes}
+                >
+                  <NotesTable patientNotes={patientNotes} notes={notes} />
                 </ColapsableSubPage>
                 <ColapsableSubPage edit={true} add={true} title={"Documents"}>
                   <DocumentsTable title="UNAMED" />
@@ -182,10 +322,11 @@ function CustomersPage() {
               </Box>
               <Box width="20%" display="flex" flexDirection="column" gap="10px">
                 <ColapsableSubPage
-                  edit={true}
+                  edit={false}
                   add={true}
                   title={"Insurance"}
                   expanded={true}
+                  onAddClick={() => handleEditInsurance()}
                 >
                   <Box
                     pt={2}
@@ -200,6 +341,7 @@ function CustomersPage() {
                           key={insurance.id}
                           title={insurance.insurancename}
                           insurance={insurance}
+                          onSelectInsurance={handleEditInsurance}
                         />
                       ))}
                   </Box>
@@ -212,8 +354,14 @@ function CustomersPage() {
                     flexDirection="column"
                     gap="12px"
                   >
-                    <Adress title="Sac SA" />
-                    <Adress title="UNAMED" />
+                    <Adress
+                      title="Sac SA"
+                      onSelectInsurance={handleEditInsurance}
+                    />
+                    <Adress
+                      title="UNAMED"
+                      onSelectInsurance={handleEditInsurance}
+                    />
                   </Box>
                 </ColapsableSubPage>
                 <ColapsableSubPage edit={true} add={true} title={"Employer"}>
@@ -224,7 +372,10 @@ function CustomersPage() {
                     flexDirection="column"
                     gap="12px"
                   >
-                    <Adress title="Test" />
+                    <Adress
+                      title="Test"
+                      onSelectInsurance={handleEditInsurance}
+                    />
                   </Box>
                 </ColapsableSubPage>
               </Box>

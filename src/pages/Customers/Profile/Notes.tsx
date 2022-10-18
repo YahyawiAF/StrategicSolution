@@ -21,87 +21,21 @@ import { useParams } from "react-router";
 import { getAllNotes } from "~/repositories/notes.service";
 
 const NotesTable = ({
-  title,
-  insurance,
+  patientNotes,
+  notes,
 }: {
-  title: string;
-  insurance?: any;
+  patientNotes: any;
+  notes?: any;
 }): JSX.Element => {
-  const [notes, setNotes] = useState<any[]>([]);
-  const [patientNotes, setPatientNotes] = useState<any[]>([]);
-
-  const PatientNotesService = useRef(getAllPatientNotes);
-  const NotesService = useRef(getAllNotes);
-
   const { id } = useParams();
-
-  const getPatientNotes = useCallback(
-    async (pagination: any) => {
-      await PatientNotesService.current(pagination).then(
-        (response: any) => {
-          setPatientNotes(response.data.data);
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    },
-    [PatientNotesService]
-  );
-
-  const getNotes = useCallback(
-    async (pagination: any) => {
-      await NotesService.current(pagination).then(
-        (response: any) => {
-          setNotes(response.data.data);
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    },
-    [NotesService]
-  );
-
-  // const CreatePatientNotes = useCallback(async () => {
-  //   await Create({
-  //     patientid: id,
-  //     noteid: 1,
-  //   }).then(
-  //     (response: any) => {
-  //       setNotes(response.data.data);
-  //     },
-  //     (error: any) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }, [NotesService]);
-
-  // useEffect(() => {
-  //   CreatePatientNotes();
-  // }, [CreatePatientNotes]);
-
-  useEffect(() => {
-    getPatientNotes({
-      page: 0,
-      limit: 50,
-    });
-  }, [getPatientNotes]);
-
-  useEffect(() => {
-    getNotes({
-      page: 0,
-      limit: 50,
-    });
-  }, [getPatientNotes]);
 
   const filtredData = useMemo(() => {
     const filtredPatientNotes = patientNotes?.filter(
-      item => item.patientid == id
+      (item: any) => item.patientid == id
     );
-    const NoteIds = filtredPatientNotes.map(item => item.noteid);
-    const filtredNotes = notes.filter(notes =>
-      NoteIds.some(filter => notes.id == filter)
+    const NoteIds = filtredPatientNotes.map((item: any) => item.noteid);
+    const filtredNotes = notes.filter((notes: any) =>
+      NoteIds.some((filter: any) => notes.id == filter)
     );
     return filtredNotes;
   }, [patientNotes, notes, id]);
@@ -118,7 +52,7 @@ const NotesTable = ({
         justifyContent="center"
         alignItems="space-between"
       >
-        {filtredData.map((field, index) => (
+        {filtredData.map((field: any, index: number) => (
           <Box
             key={index}
             sx={{ p: 2 }}
@@ -132,7 +66,7 @@ const NotesTable = ({
           >
             <Text fontWeight="600">{field?.note}</Text>
             <Text>{field?.createdUtc}</Text>
-            <Text>{field?.title}</Text>
+            <Text>{field?.modifiedUtc}</Text>
             <Text fontWeight="600">{field?.createdBy}</Text>
           </Box>
         ))}

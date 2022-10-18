@@ -17,16 +17,16 @@ import { LoadingButton } from "@mui/lab";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { SnackbarOrigin } from "@mui/material/Snackbar";
 
-import { MethodeType } from "~/types";
+import { IDefaultValuesProducts, MethodeType } from "~/types";
 import {
   FormInput,
   FormProvider,
   RHFTextInputLabel,
 } from "@components/hook-form";
-import { Create, Modify } from "~/repositories/product.service";
+import { Create, Modify } from "~/repositories/patients.servise";
 
 export const DEFAULT_PROFILE_VALUES = {
-  title: "",
+  firstname: "",
   email: "",
   country: "",
   state: "",
@@ -51,6 +51,7 @@ const StyledInput = styled(FormInput)(
   ({ theme }) => `
     && {
       margin-top: 0 !important;
+      height: 25px;
     }
 `
 );
@@ -68,9 +69,14 @@ const SaveButton = styled(LoadingButton)(
 interface PatientProfileProps {
   patient: any;
   edit: boolean;
+  onFetchData: (id: string) => void;
 }
 
-const ProfileForm: FC<PatientProfileProps> = ({ patient, edit }) => {
+const ProfileForm: FC<PatientProfileProps> = ({
+  patient,
+  edit,
+  onFetchData,
+}) => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: "top",
@@ -147,14 +153,14 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient, edit }) => {
   }, []);
 
   const RegisterSchema = Yup.object().shape({
-    title: Yup.string().required("title required"),
-    email: Yup.string().required("Email required"),
-    country: Yup.string().required("Country required"),
-    state: Yup.string().required("State required"),
-    city: Yup.string().required("City required"),
-    zipCode: Yup.string().required("ZipCode required"),
-    company: Yup.string().required("Company required"),
-    role: Yup.string().required("Role required"),
+    // firstname: Yup.string().required("title required"),
+    // email: Yup.string().required("Email required"),
+    // country: Yup.string().required("Country required"),
+    // state: Yup.string().required("State required"),
+    // city: Yup.string().required("City required"),
+    // zipCode: Yup.string().required("ZipCode required"),
+    // company: Yup.string().required("Company required"),
+    // role: Yup.string().required("Role required"),
   });
 
   const methods = useForm({
@@ -183,9 +189,24 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient, edit }) => {
     }
   }, [patient]);
 
-  const onSubmit = useCallback(async () => {
-    console.log("data");
-  }, [handleOpen, Modify, Create]);
+  const onSubmit = useCallback(
+    async (data: any) => {
+      Modify(patient.id, data).then(
+        async () => {
+          handleOpen();
+          onFetchData(patient.id);
+        },
+        error => {
+          console.log("error", error);
+        }
+      );
+    },
+    [patient, handleOpen]
+  );
+
+  console.log("FormInputProfileList", FormInputProfileList);
+  console.log("Column2", Column2);
+  console.log("methods", methods.formState);
 
   return (
     <>
@@ -202,52 +223,63 @@ const ProfileForm: FC<PatientProfileProps> = ({ patient, edit }) => {
           methods={methods as unknown as MethodeType}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <FormContainer>
-            <StyledHeader>Name</StyledHeader>
-            {FormInputProfileList.map((field, index) => (
-              <>
-                <Box display="flex" justifyContent="space-between">
-                  <StyledTitle>{`${field.title}: `} </StyledTitle>
-                  {edit ? (
-                    <StyledInput key={index} name={field.name} />
-                  ) : (
-                    <StyledTitle>{`${field.content}`} </StyledTitle>
-                  )}
-                </Box>
-              </>
-            ))}
-          </FormContainer>
-          <FormContainer>
-            <StyledHeader>Name</StyledHeader>
-            {Column2.map((field, index) => (
-              <>
-                <Box display="flex" justifyContent="space-between">
-                  <StyledTitle>{`${field.title}: `} </StyledTitle>
-                  {edit ? (
-                    <StyledInput key={index} name={field.name} />
-                  ) : (
-                    <StyledTitle>{`${field.content}`} </StyledTitle>
-                  )}
-                </Box>
-              </>
-            ))}
-          </FormContainer>
-          <FormContainer>
-            <StyledHeader>Name</StyledHeader>
-            {Column3.map((field, index) => (
-              <>
-                <Box display="flex" justifyContent="space-between">
-                  <StyledTitle>{`${field.title}: `} </StyledTitle>
-                  {edit ? (
-                    <StyledInput key={index} name={field.name} />
-                  ) : (
-                    <StyledTitle>{`${field.content}`} </StyledTitle>
-                  )}
-                </Box>
-              </>
-            ))}
-          </FormContainer>
-
+          <Box>
+            <FormContainer>
+              <StyledHeader>Name</StyledHeader>
+              {FormInputProfileList.map((field, index) => (
+                <>
+                  <Box display="flex" justifyContent="space-between">
+                    <StyledTitle key={field.title}>
+                      {`${field.title}: `}{" "}
+                    </StyledTitle>
+                    {edit ? (
+                      <StyledInput key={field.title} name={field.name} />
+                    ) : (
+                      <StyledTitle key={field.title}>
+                        {`${field.content}`}{" "}
+                      </StyledTitle>
+                    )}
+                  </Box>
+                </>
+              ))}
+            </FormContainer>
+            <FormContainer>
+              <StyledHeader>Name</StyledHeader>
+              {Column2.map((field, index) => (
+                <>
+                  <Box display="flex" justifyContent="space-between">
+                    <StyledTitle key={field.title}>
+                      {`${field.title}: `}{" "}
+                    </StyledTitle>
+                    {edit ? (
+                      <StyledInput key={index} name={field.name} />
+                    ) : (
+                      <StyledTitle>{`${field.content}`} </StyledTitle>
+                    )}
+                  </Box>
+                </>
+              ))}
+            </FormContainer>
+            <FormContainer>
+              <StyledHeader>Name</StyledHeader>
+              {Column3.map((field, index) => (
+                <>
+                  <Box display="flex" justifyContent="space-between">
+                    <StyledTitle key={field.title}>
+                      {`${field.title}: `}{" "}
+                    </StyledTitle>
+                    {edit ? (
+                      <StyledInput key={field.name} name={field.name} />
+                    ) : (
+                      <StyledTitle key={field.name}>
+                        {`${field.content}`}{" "}
+                      </StyledTitle>
+                    )}
+                  </Box>
+                </>
+              ))}
+            </FormContainer>
+          </Box>
           {edit ? (
             <SaveButton
               size="large"
@@ -278,7 +310,14 @@ const CardStyled = styled(Box)(
         > form {
           width: 100%;
           display: flex;
+          flex-direction: column;
+          align-items: end;
           gap: 10px;
+          > div {
+            width: 100%;
+            display: flex;
+            gap: 10px;
+          }
         }
       }
   `
@@ -305,7 +344,8 @@ const FormContainer = styled(Box)(
       && {
         display: flex;
         flex-direction: column;
-        width: 33%
+        width: 33%;
+        gap: 5px;
       }
   `
 );
