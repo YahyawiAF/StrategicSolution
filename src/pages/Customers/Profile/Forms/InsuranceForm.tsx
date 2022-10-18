@@ -223,16 +223,8 @@ const InsuranceForm: FC<any> = ({
           display="flex !important"
           p="18px 0"
           gap="15px"
-          justifyContent="start"
+          justifyContent="space-between"
         >
-          <CancelButton
-            onClick={() => onClose()}
-            size="large"
-            type="reset"
-            variant="contained"
-          >
-            Cancel
-          </CancelButton>
           <SaveButton
             size="large"
             type="submit"
@@ -241,6 +233,14 @@ const InsuranceForm: FC<any> = ({
           >
             Save
           </SaveButton>
+          <CancelButton
+            onClick={() => onClose()}
+            size="large"
+            type="reset"
+            variant="contained"
+          >
+            Cancel
+          </CancelButton>
         </Box>
       </FormProvider>
     </>

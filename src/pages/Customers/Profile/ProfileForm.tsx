@@ -225,7 +225,6 @@ const ProfileForm: FC<PatientProfileProps> = ({
         >
           <Box>
             <FormContainer>
-              <StyledHeader>Name</StyledHeader>
               {FormInputProfileList.map((field, index) => (
                 <>
                   <Box display="flex" justifyContent="space-between">
@@ -243,8 +242,8 @@ const ProfileForm: FC<PatientProfileProps> = ({
                 </>
               ))}
             </FormContainer>
+            <Divider orientation="vertical" />
             <FormContainer>
-              <StyledHeader>Name</StyledHeader>
               {Column2.map((field, index) => (
                 <>
                   <Box display="flex" justifyContent="space-between">
@@ -260,8 +259,8 @@ const ProfileForm: FC<PatientProfileProps> = ({
                 </>
               ))}
             </FormContainer>
+            <Divider orientation="vertical" />
             <FormContainer>
-              <StyledHeader>Name</StyledHeader>
               {Column3.map((field, index) => (
                 <>
                   <Box display="flex" justifyContent="space-between">

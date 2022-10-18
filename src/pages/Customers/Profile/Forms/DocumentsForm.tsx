@@ -93,7 +93,7 @@ const DocumentForm: FC<any> = ({ notes, pagination, onClose, onFetchData }) => {
       documenttype: acceptedFiles[0].type,
       patientid: id,
       documentname: acceptedFiles[0].name,
-      Attachment: file,
+      Attachment: acceptedFiles[0].name,
     }).then(
       async () => {
         onFetchData(pagination);

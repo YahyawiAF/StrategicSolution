@@ -13,7 +13,7 @@ import { API_URL } from "~/config/axios";
 // };
 
 export const getAllPatientTasks = () => {
-  return axios.get(API_URL + `/PatientTaskList`, {
+  return axios.get(API_URL + `/PatientTaskList/Select`, {
     headers: authHeader(),
   });
 };

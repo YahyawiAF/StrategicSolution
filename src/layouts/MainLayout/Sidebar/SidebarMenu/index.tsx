@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 
 import {
   Stack,
@@ -9,8 +9,10 @@ import {
   Button,
   ListItem,
   Divider,
+  Popover,
+  Typography,
 } from "@mui/material";
-import { NavLink as RouterLink } from "react-router-dom";
+import { NavLink as RouterLink, useNavigate } from "react-router-dom";
 import { SidebarContext } from "~/contexts/SidebarContext";
 
 import { ReactComponent as ProfileIcon } from "~/assets/icons/profile.svg";
@@ -18,6 +20,7 @@ import { ReactComponent as HeartIcon } from "~/assets/icons/heart.svg";
 import { ReactComponent as ReportsIcon } from "~/assets/icons/reports.svg";
 import { ReactComponent as BillingIcon } from "~/assets/icons/billing.svg";
 import { ReactComponent as UmbrellaIcon } from "~/assets/icons/umbrella.svg";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import Breadcrumb from "@components/Breadcrumbs";
@@ -194,6 +197,17 @@ const SubMenuWrapper = styled(Box)(
 );
 
 function SidebarMenu() {
+  const ref = useRef<any>(null);
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const handleOpen = (): void => {
+    setOpen(true);
+  };
+
+  const handleClose = (): void => {
+    setOpen(false);
+  };
   return (
     <>
       <MenuWrapper>
@@ -240,6 +254,78 @@ function SidebarMenu() {
                   />
                 </Tooltip>
               </ListItem>
+              <ListItem component="div">
+                <Tooltip placement="right" title="Settings" arrow>
+                  <Button
+                    ref={ref}
+                    onClick={handleOpen}
+                    disableRipple
+                    startIcon={<SettingsIcon />}
+                  />
+                </Tooltip>
+                <Popover
+                  anchorEl={ref.current}
+                  onClose={handleClose}
+                  open={isOpen}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                >
+                  {/* <Box
+                    sx={{ p: 2 }}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <StyledTitle>Notifications</StyledTitle>
+                  </Box>
+                  <Divider /> */}
+                  <List sx={{ p: 0 }}>
+                    <ListItem
+                      sx={{
+                        p: 2,
+                      }}
+                    >
+                      <Box flex="1">
+                        <Box display="flex" justifyContent="space-between">
+                          <StyledTitle
+                            onClick={() => {
+                              navigate("/patient");
+                              handleClose();
+                            }}
+                          >
+                            Patient
+                          </StyledTitle>
+                        </Box>
+                      </Box>
+                    </ListItem>
+                    <Divider />
+                    <ListItem
+                      sx={{
+                        p: 2,
+                      }}
+                    >
+                      <Box flex="1">
+                        <Box display="flex" justifyContent="space-between">
+                          <StyledTitle
+                            onClick={() => {
+                              navigate("/insurance");
+                              handleClose();
+                            }}
+                          >
+                            Insurance
+                          </StyledTitle>
+                        </Box>
+                      </Box>
+                    </ListItem>
+                  </List>
+                </Popover>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
@@ -247,5 +333,17 @@ function SidebarMenu() {
     </>
   );
 }
+
+const StyledTitle = styled(Typography)(
+  () => `
+    && {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 14px;
+      cursor: pointer;  
+    }
+`
+);
 
 export default SidebarMenu;

@@ -6,6 +6,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import AccordionActions from "@mui/material/AccordionActions";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 
 const ColapsableSubPage = ({
@@ -33,7 +34,7 @@ const ColapsableSubPage = ({
       <AccordionSummary
         expandIcon={
           icon ? (
-            icon
+            <ExpandMoreIcon onClick={() => setisExpanded(!isExpanded)} />
           ) : (
             <CropFreeIcon onClick={() => setisExpanded(!isExpanded)} />
           )

@@ -24,6 +24,7 @@ import { If, Then, Else } from "react-if";
 import { ReactComponent as Plus } from "~/assets/icons/plus.svg";
 import { ReactComponent as Clock } from "~/assets/icons/clock.svg";
 import { ReactComponent as Bolt } from "~/assets/icons/bolt.svg";
+import CloseIcon from "@mui/icons-material/Close";
 import PhoneTable from "./PhoneTable";
 import InsuranceForm from "./Forms/InsuranceForm";
 import NoteForm from "./Forms/NotesForm";
@@ -33,7 +34,6 @@ import SuspenseLoader from "~/components/SuspenseLoader";
 import DocumentForm from "./Forms/DocumentsForm";
 
 enum TaskListForm {
-  TaskList = "taskList",
   InsuranceForm = "insuranceForm",
   NoteForm = "noteForm",
   DocumentForm = "documentForm",
@@ -59,8 +59,9 @@ const BalanceBox: FC<BalanceBoxProps> = ({ title, balance }) => {
 
 function CustomersPage() {
   const [patient, setPatient] = useState();
-  const [sideMenu, setSideMenu] = useState<TaskListForm>(TaskListForm.TaskList);
+  const [sideMenu, setSideMenu] = useState<TaskListForm>();
   const [isEditMenuVisible, setIsEditMenuVisible] = useState<boolean>(false);
+  const [isFormMenuVisible, setIsFormMenuVisible] = useState<boolean>(false);
   const [insurances, setInsurances] = useState<any[]>([]);
   const [editInsurances, setEditInsurance] = useState<any>([]);
   const [isEditPatient, setIsEditPatient] = useState<boolean>(false);
@@ -162,30 +163,27 @@ function CustomersPage() {
     (insurance?: any) => {
       insurance ? setEditInsurance(insurance) : setEditInsurance(undefined);
       setSideMenu(TaskListForm.InsuranceForm);
-      setIsEditMenuVisible(true);
+      setIsFormMenuVisible(true);
     },
     [TaskListForm, setIsEditMenuVisible, setEditInsurance]
   );
 
   const handleEditNotes = useCallback(() => {
     setSideMenu(TaskListForm.NoteForm);
-    setIsEditMenuVisible(true);
+    setIsFormMenuVisible(true);
   }, [TaskListForm, setIsEditMenuVisible]);
 
   const handleEditDocuments = useCallback(() => {
     setSideMenu(TaskListForm.DocumentForm);
-    setIsEditMenuVisible(true);
+    setIsFormMenuVisible(true);
   }, [TaskListForm, setIsEditMenuVisible]);
 
   const handleCloseEdit = useCallback(() => {
-    setSideMenu(TaskListForm.TaskList);
-  }, [TaskListForm]);
+    setIsFormMenuVisible(false);
+  }, [setIsFormMenuVisible]);
 
   const GetTaskList = useMemo(() => {
     switch (sideMenu) {
-      case TaskListForm.TaskList:
-        return <TasksTag />;
-        break;
       case TaskListForm.InsuranceForm:
         return (
           <InsuranceForm
@@ -220,9 +218,25 @@ function CustomersPage() {
         );
         break;
       default:
-        return <TasksTag />;
+        return null;
     }
   }, [sideMenu, TaskListForm, editInsurances, getAllInsurances]);
+
+  const GetFormTitle = useMemo(() => {
+    switch (sideMenu) {
+      case TaskListForm.InsuranceForm:
+        return "Edit Form";
+        break;
+      case TaskListForm.NoteForm:
+        return "Note Form";
+        break;
+      case TaskListForm.DocumentForm:
+        return "Document Form";
+        break;
+      default:
+        return "";
+    }
+  }, [sideMenu, TaskListForm]);
 
   console.log("isEditPatient", isEditPatient);
 
@@ -230,7 +244,30 @@ function CustomersPage() {
     <>
       <Page>
         <Box width="100%" display="flex" gap="10px">
-          <EditSideMenu visible={isEditMenuVisible}>
+          <EditSideMenu visible={isFormMenuVisible}>
+            <Box
+              p="15px"
+              display="flex"
+              justifyContent={isFormMenuVisible ? "space-between" : "center"}
+              alignItems="center"
+              height={"79px"}
+              sx={{ borderBottom: "1px solid #000" }}
+            >
+              <Typography
+                display={isFormMenuVisible ? "block" : "none"}
+                variant="h4"
+                sx={{ cursor: "pointer" }}
+              >
+                {GetFormTitle}
+              </Typography>
+              <CloseIcon
+                onClick={() => setIsFormMenuVisible(!isFormMenuVisible)}
+              />
+            </Box>
+            <Divider />
+            {isFormMenuVisible ? GetTaskList : null}
+          </EditSideMenu>
+          <TaskSideMenu visible={isEditMenuVisible}>
             <Box
               p="5px"
               display="flex"
@@ -242,21 +279,17 @@ function CustomersPage() {
               <Typography
                 display={isEditMenuVisible ? "block" : "none"}
                 variant="h4"
-                onClick={() => setSideMenu(TaskListForm.TaskList)}
                 sx={{ cursor: "pointer" }}
               >
                 TaskList
               </Typography>
               <MenuIcon
-                onClick={() => {
-                  setIsEditMenuVisible(!isEditMenuVisible);
-                  setSideMenu(TaskListForm.TaskList);
-                }}
+                onClick={() => setIsEditMenuVisible(!isEditMenuVisible)}
               />
             </Box>
             <Divider />
-            {isEditMenuVisible ? GetTaskList : null}
-          </EditSideMenu>
+            {isEditMenuVisible ? <TasksTag /> : null}
+          </TaskSideMenu>
           <Box width="100%" display="flex" flexDirection="column" gap="10px">
             <Box display="flex" height="100px" sx={{ background: "#FFF" }}>
               <IconBox>
@@ -322,7 +355,7 @@ function CustomersPage() {
                     edit={isEditPatient}
                     patient={patient}
                   />
-                  <PhoneTable patient={patient} />
+                  {/* <PhoneTable patient={patient} /> */}
                 </ColapsableSubPage>
 
                 <ColapsableSubPage
@@ -424,7 +457,7 @@ function CustomersPage() {
   );
 }
 
-const EditSideMenu = styled("div", {
+const TaskSideMenu = styled("div", {
   shouldForwardProp: prop => prop !== "visible",
 })<EditMenuProps>(
   ({ theme, visible }) => `
@@ -438,6 +471,36 @@ const EditSideMenu = styled("div", {
     overflow: auto;
   form {
     padding: 25px;
+    div {
+      display: block;
+    }
+  }
+`
+);
+
+const EditSideMenu = styled("div", {
+  shouldForwardProp: prop => prop !== "visible",
+})<EditMenuProps>(
+  ({ theme, visible }) => `
+  width: ${visible ? "500px" : "50px"};
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  left: ${visible ? "0" : "-50px"};
+
+  background: #E9E9E9;
+  z-index: 12;
+  transition: width 0.5s;
+      border-top: 1px solid #cecbcb;
+    box-shadow: 5px 12px 9px rgb(0 0 0 / 10%);
+    overflow: auto;
+  form {
+    padding: 25px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     div {
       display: block;
     }

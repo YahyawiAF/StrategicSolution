@@ -182,29 +182,31 @@ const NoteForm: FC<any> = ({ notes, pagination, onClose, onFetchData }) => {
             </Grid>
           ))}
         </Grid>
-        <Divider />
-        <Box
-          display="flex !important"
-          p="18px 0"
-          gap="15px"
-          justifyContent="start"
-        >
-          <CancelButton
-            onClick={() => onClose()}
-            size="large"
-            type="reset"
-            variant="contained"
+        <Box>
+          <Divider />
+          <Box
+            display="flex !important"
+            p="18px 0"
+            gap="15px"
+            justifyContent="space-between"
           >
-            Cancel
-          </CancelButton>
-          <SaveButton
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
-            Save
-          </SaveButton>
+            <SaveButton
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Save
+            </SaveButton>
+            <CancelButton
+              onClick={() => onClose()}
+              size="large"
+              type="reset"
+              variant="contained"
+            >
+              Cancel
+            </CancelButton>
+          </Box>
         </Box>
       </FormProvider>
     </>
