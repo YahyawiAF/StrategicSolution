@@ -275,6 +275,7 @@ function SidebarMenu() {
                     vertical: "bottom",
                     horizontal: "left",
                   }}
+                  sx={{ left: "38px", top: "-12px" }}
                 >
                   {/* <Box
                     sx={{ p: 2 }}
@@ -286,43 +287,31 @@ function SidebarMenu() {
                   </Box>
                   <Divider /> */}
                   <List sx={{ p: 0 }}>
-                    <ListItem
-                      sx={{
-                        p: 2,
+                    <StyledList
+                      onClick={() => {
+                        navigate("/patient");
+                        handleClose();
                       }}
                     >
                       <Box flex="1">
                         <Box display="flex" justifyContent="space-between">
-                          <StyledTitle
-                            onClick={() => {
-                              navigate("/patient");
-                              handleClose();
-                            }}
-                          >
-                            Patient
-                          </StyledTitle>
+                          <StyledTitle>Patient</StyledTitle>
                         </Box>
                       </Box>
-                    </ListItem>
+                    </StyledList>
                     <Divider />
-                    <ListItem
-                      sx={{
-                        p: 2,
+                    <StyledList
+                      onClick={() => {
+                        navigate("/insurance");
+                        handleClose();
                       }}
                     >
                       <Box flex="1">
                         <Box display="flex" justifyContent="space-between">
-                          <StyledTitle
-                            onClick={() => {
-                              navigate("/insurance");
-                              handleClose();
-                            }}
-                          >
-                            Insurance
-                          </StyledTitle>
+                          <StyledTitle>Insurance</StyledTitle>
                         </Box>
                       </Box>
-                    </ListItem>
+                    </StyledList>
                   </List>
                 </Popover>
               </ListItem>
@@ -341,7 +330,18 @@ const StyledTitle = styled(Typography)(
       font-weight: 600;
       font-size: 12px;
       line-height: 14px;
+    }
+`
+);
+
+const StyledList = styled(ListItem)(
+  () => `
+    && {
+      padding: 18px;
       cursor: pointer;  
+      &&:hover {
+        background: #e6e6e6;
+      }
     }
 `
 );

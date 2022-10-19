@@ -172,7 +172,7 @@ const LoginForm: FC = () => {
         </Stack>
         {LoginButton}
         <Typography textAlign="center" paddingTop="20px">
-          This version is 1.0.0.5 10/18/2022
+          version: 1.0.0.6 10/19/2022
         </Typography>
       </FormProvider>
     </>
